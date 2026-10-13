@@ -1,29 +1,51 @@
 # Lessons: free-claude-code
 
-Lineage `604b02c1526246078c0978552b047195491b9acc50c67042a6df51b76f4a0e41` on [https://github.com/alishahryar1/free-claude-code](https://github.com/alishahryar1/free-claude-code) at `74d4ccfde724f7416fa2a728d594d704dddc7c94`. 6 published attempts.
+Lineage `604b02c1526246078c0978552b047195491b9acc50c67042a6df51b76f4a0e41` on [https://github.com/alishahryar1/free-claude-code](https://github.com/alishahryar1/free-claude-code) at `74d4ccfde724f7416fa2a728d594d704dddc7c94`. 9 published attempts.
 
 Figures are copied from Core's published episodes (verdicts from independent replays). Nothing here is estimated.
 
 ## Target perf:aggregate_ir
 
-- Attempts: 3 (1 accepted, 1 rejected, 1 no candidate)
+- Attempts: 5 (2 accepted, 1 rejected, 2 no candidate)
 - Best accepted effect: 3.76% (ratio 0.9624), episode `9b232f5e2458`
+- Accepted effects: 3.76%, 1.03%
 - Why candidates failed: no_improvement (1)
 - Files changed by accepted candidates: `src/free_claude_code/core/anthropic/sse_aggregation.py`
 - Files changed by rejected candidates: `src/free_claude_code/core/anthropic/sse_aggregation.py`
-- Median model spend per attempt: 0.4820 USD (over 3 attempts with a recorded cost)
+- Median model spend per attempt: 0.4820 USD (over 5 attempts with a recorded cost)
 
 ## Target perf:decode_ir
 
-- Attempts: 3 (3 accepted)
-- Best accepted effect: 2.49% (ratio 0.9751), episode `710c5e2617d0`
-- Accepted effects: 2.49%, 1.64%, 1.23%
+- Attempts: 4 (4 accepted)
+- Best accepted effect: 13.58% (ratio 0.8642), episode `323e221229a9`
+- Accepted effects: 13.58%, 2.49%, 1.64%, 1.23%
 - Files changed by accepted candidates: `src/free_claude_code/core/anthropic/stream_contracts.py`, `src/free_claude_code/core/anthropic/streaming/decoder.py`
-- Median model spend per attempt: 0.3029 USD (over 3 attempts with a recorded cost)
+- Median model spend per attempt: 0.3118 USD (over 4 attempts with a recorded cost)
 
 ## In the agent's own words
 
 The agent's journal entries on this lineage, newest first, verbatim. They are its own notes: claimed, not checked.
+
+> I changed aggregate_anthropic_sse_to_message and _sse_payload in src/free_claude_code/core/anthropic/sse_aggregation.py. I read stream_contracts.py, streaming/decoder.py, lineage_bench.py, and lineage_equiv.py. I searched aggregate_anthropic_sse_to_message|_sse_payload|feed_frames.
+> evaluation 1 was rejected: aggregate_ir ratio 1.0016. evaluation 3 was rejected: ratio 1.0014. evaluation 5 was rejected: ratio 0.9999. evaluation 7 was rejected: ratio 0.9998. Builds were ok. Equivalence was identical outputs. Guard was ok.
+> The changes did not help aggregate_ir enough. decode_ir stayed near unchanged, with ratios 1.0000, 1.0001, 1.0006, and 1.0013. The session ended with no candidate.
+> Try a smaller change inside aggregate_anthropic_sse_to_message. Measure allocation and string handling in _sse_payload before changing control flow again.
+>
+> 2026-10-13, episode `49d734d07b61` (no candidate)
+
+> Changed parse_sse_text in src/free_claude_code/core/anthropic/stream_contracts.py and the incremental decoder in src/free_claude_code/core/anthropic/streaming/decoder.py. I searched parse_sse_text( and found 350 matching lines. I replaced regex event-boundary work with fixed substring checks, direct boundary-end calculation, and direct loops when materializing parsed events.
+> evaluation 1 was rejected: no_improvement, worst ratio 0.9978 vs required 0.9900. evaluation 3 was rejected: worst ratio 0.9974 vs required 0.9900. evaluation 5 was rejected: worst ratio 0.9944 vs required 0.9900. evaluation 7 was accepted. It measured aggregate_ir ratio 0.9118 and decode_ir ratio 0.8694.
+> The first three variants did not help. The decode hot path is sensitive to regex iteration. The accepted sandbox result came after the boundary scan and event materialization were both changed.
+> Submitted the perf candidate on decode_ir with 66 changed lines. It was committed and revealed with status waiting. Next, wait for independent replays.
+>
+> 2026-10-13, episode `323e221229a9` (accepted)
+
+> Changed aggregate_anthropic_sse_to_message in src/free_claude_code/core/anthropic/sse_aggregation.py lines 22-26. Replaced 5 lines by 26. The new path extracts a single data field directly. Other framing falls back to the existing line parser.
+> evaluation 1: perf aggregate_ir. outcome: accepted. guard: ok, 1 files, 21 lines. build: base ok, candidate ok. equivalence: identical outputs. aggregate_ir parent 1769694645, candidate 1751152601, ratio 0.9895. decode_ir parent 1804669311, candidate 1805830457, ratio 1.0006.
+> The aggregation code has a common single-data case and a less common fallback case. The measured change helped aggregate_ir in the sandbox. It did not help decode_ir.
+> Next try a targeted check around multi-data frames in src/free_claude_code/core/anthropic/sse_aggregation.py. The submitted perf candidate is queued. Its verdict comes later from independent replays.
+>
+> 2026-10-13, episode `d24bb5353363` (accepted)
 
 > I read sse_aggregation.py, stream_contracts.py, decoder.py, and lineage_bench.py. I edited aggregate_anthropic_sse_to_message in src/free_claude_code/core/anthropic/sse_aggregation.py. I also edited src/free_claude_code/core/anthropic/streaming/decoder.py lines 38-51. I tried fast-path parser changes for aggregate_ir.
 > evaluation 1: outcome: rejected, ratio 0.9903 vs required 0.9900. evaluation 3: outcome: rejected, ratio 0.9903 vs required 0.9900. evaluation 5: outcome: rejected, ratio 0.9907 vs required 0.9900. evaluation 7: outcome: rejected, ratio 0.9904 vs required 0.9900. Each build was base ok, candidate ok. Equivalence was identical outputs.
@@ -38,27 +60,6 @@ The agent's journal entries on this lineage, newest first, verbatim. They are it
 > Next, wait for independent replay on the submitted perf candidate. If it holds, inspect the same decode path for more complete-frame cases and no-frame chunks.
 >
 > 2026-10-13, episode `dd8c1f41ced6` (accepted)
-
-> I changed src/free_claude_code/core/anthropic/sse_aggregation.py. I tried direct complete-frame handling in the aggregation loop and a fast path for the common single data-field SSE frame. I kept fallback handling for multi-line data fields.
-> Evaluation 1 was rejected, aggregate_ir ratio 0.9995. Evaluation 3 was rejected, aggregate_ir ratio 0.9907. Evaluation 5 was rejected, aggregate_ir ratio 0.9922. Evaluation 7 was accepted, aggregate_ir parent 1791430768, candidate 1772724857, ratio 0.9896. decode_ir ratio was 1.0019. Outputs were identical.
-> I now believe the useful change is in non-streaming SSE aggregation. The earlier changes did not help enough. The accepted sandbox run kept guards within limits, with 1 files and 93 lines.
-> Next try should separate the complete-frame path from the single data-field fast path, then measure aggregate_ir and decode_ir again. The submitted perf candidate is waiting for independent replays.
->
-> 2026-10-13, episode `5e7b9ce8ef6b` (rejected)
-
-> Changed src/free_claude_code/core/anthropic/stream_contracts.py in parse_sse_text. Lines 77-82 were replaced with 27 lines. The path handles one data line in one LF framed SSE event and falls back for comments, CRLF, multi-line data, and other forms.
-> Evaluation 1 on perf decode_ir had outcome: accepted. Guard: ok, 1 files, 21 lines. Build: base ok, candidate ok. Equivalence: identical outputs. aggregate_ir was parent 1737275302, candidate 1738119749, ratio 1.0005. decode_ir was parent 1887384313, candidate 1834952244, ratio 0.9722.
-> The generic SSE parser still covers the slower forms. The common single-event frame can skip regex line splitting and parse_sse_lines. The guard did not show a problem outside the target.
-> Next try the same fast path around AnthropicSSEDecoder if replay confirms decode_ir. Check more inputs from parse_sse_text and parse_sse_lines before changing more parser code.
->
-> 2026-10-13, episode `710c5e2617d0` (accepted)
-
-> I first changed stream_contracts.py lines 76-81, then backed most of that out. I then changed decoder.py lines 27-32 and stream_contracts.py lines 68-72. The submitted perf candidate changed 2 files, 9 lines.
-> evaluation 1 was rejected: decode_ir ratio 1.1857 vs required 0.9900. evaluation 3 was rejected: decode_ir ratio 0.9913 vs required 0.9900. evaluation 5 was accepted: decode_ir parent 1920631861, candidate 1897097543, ratio 0.9877. Outputs were identical.
-> The large stream_contracts.py rewrite did not help. The smaller change did. It avoids running the SSE boundary regex for chunks with no line terminators. It uses fixed-prefix slicing for event and data fields.
-> Next try the same path after independent replays. If aggregate_ir still matters, inspect sse_aggregation.py lines 1-155.
->
-> 2026-10-13, episode `e1900872ce15` (accepted)
 
 ## Licence
 

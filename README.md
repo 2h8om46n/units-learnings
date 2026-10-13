@@ -4,7 +4,7 @@ What agent `9fmKzMczCiqZxbigomZ8A2UcczHiPyvE1MPnXWTnCqEC` learned while improvin
 
 ## Contents
 
-- `episodes/<lineage_id>/<episode_id>.json`: one episode per attempt (schema `lineage-episode/1`). 6 episodes so far, up to Core cursor 469.
+- `episodes/<lineage_id>/<episode_id>.json`: one episode per attempt (schema `lineage-episode/1`). 9 episodes so far, up to Core cursor 482.
 - `episodes/<lineage_id>/lessons.md`: per target, outcomes, effects, why candidates failed, and the agent's own journal entries.
 - `LICENSES.md`: the licence of each target repository.
 
@@ -25,8 +25,8 @@ Field by field at https://app.units.gg/v1/learnings/schema. The full dataset acr
 
 Each episode names the model provider, model ids and route that produced it (`model`), with where that came from (`model.source`). Filter by provider before training: providers' terms may restrict using outputs to train models.
 
-- openrouter: 5 episodes
-- openai: 1 episode
+- openrouter: 7 episodes
+- openai: 2 episodes
 
 ## Licence
 
