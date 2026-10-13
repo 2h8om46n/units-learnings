@@ -1,6 +1,6 @@
 # Lessons: free-claude-code
 
-Lineage `604b02c1526246078c0978552b047195491b9acc50c67042a6df51b76f4a0e41` on [https://github.com/alishahryar1/free-claude-code](https://github.com/alishahryar1/free-claude-code) at `74d4ccfde724f7416fa2a728d594d704dddc7c94`. 17 published attempts.
+Lineage `604b02c1526246078c0978552b047195491b9acc50c67042a6df51b76f4a0e41` on [https://github.com/alishahryar1/free-claude-code](https://github.com/alishahryar1/free-claude-code) at `74d4ccfde724f7416fa2a728d594d704dddc7c94`. 18 published attempts.
 
 Figures are copied from Core's published episodes (verdicts from independent replays). Nothing here is estimated.
 
@@ -16,15 +16,22 @@ Figures are copied from Core's published episodes (verdicts from independent rep
 
 ## Target perf:decode_ir
 
-- Attempts: 9 (4 accepted, 5 no candidate)
+- Attempts: 10 (4 accepted, 6 no candidate)
 - Best accepted effect: 13.58% (ratio 0.8642), episode `323e221229a9`
 - Accepted effects: 13.58%, 2.49%, 1.64%, 1.23%
 - Files changed by accepted candidates: `src/free_claude_code/core/anthropic/stream_contracts.py`, `src/free_claude_code/core/anthropic/streaming/decoder.py`
-- Median model spend per attempt: 0.6940 USD (over 9 attempts with a recorded cost)
+- Median model spend per attempt: 0.7003 USD (over 10 attempts with a recorded cost)
 
 ## In the agent's own words
 
 The agent's journal entries on this lineage, newest first, verbatim. They are its own notes: claimed, not checked.
+
+> I changed parse_sse_text, feed_frames, and AnthropicSSEDecoder feed code in decoder.py and stream_contracts.py. The last version parsed frames directly in feed and avoided some intermediate allocations.
+> evaluation 7 was rejected with no_improvement: worst ratio 0.9972 vs required 0.9900. decode_ir was parent 1549727003, candidate 1545373932, ratio 0.9972. aggregate_ir was parent 1592341369, candidate 1595549034, ratio 1.0020. Build passed and equivalence was identical outputs.
+> The direct decode-path change preserved output but did not clear the threshold. Earlier versions also did not help enough: ratios 1.0003, 0.9998, and 0.9990.
+> Next try less work in stream_contracts.py before decode, or a different hotspot from lineage_bench.py. No candidate was submitted.
+>
+> 2026-10-13, episode `8d0bd54b225b` (no candidate)
 
 > I changed src/free_claude_code/core/anthropic/streaming/decoder.py and src/free_claude_code/core/anthropic/stream_contracts.py. I tried targeted reductions in AnthropicSSEDecoder, parse_sse_text, and feed_frames. The changes touched decoder framing, SSE parsing, imports, and aliasing.
 > evaluation 1 was rejected: no_improvement, worst ratio 0.9986 vs required 0.9900. decode_ir was parent 1548400607, candidate 1546158107, ratio 0.9986. evaluation 3 was rejected at 0.9983. evaluation 5 was rejected at 0.9985. evaluation 7 was rejected because 2 stable tests fail. No candidate was submitted.
@@ -53,13 +60,6 @@ The agent's journal entries on this lineage, newest first, verbatim. They are it
 > Next try a different decode_ir path. Re-read lineage_bench.py and lineage_equiv.py before changing more parser code.
 >
 > 2026-10-13, episode `5bc22d6ac3a6` (no candidate)
-
-> Changed src/free_claude_code/core/anthropic/sse_aggregation.py for aggregate_ir. The session facts record line edits, not a function name. Read stream_contracts.py, streaming/decoder.py, lineage_bench.py, and lineage_equiv.py.
-> evaluation 1 was rejected: no_improvement: worst ratio 0.9996 vs required 0.9900. evaluation 3 was rejected at ratio 0.9987. evaluation 5 was rejected at ratio 0.9994. evaluation 7 was rejected at ratio 0.9938. Each build was ok. Equivalence was identical outputs. Guard was ok.
-> The best measured aggregate_ir change was parent 1548971772, candidate 1539408272, ratio 0.9938. decode_ir moved to parent 1525836749, candidate 1534283872, ratio 1.0055. The changes did not help enough. No candidate was submitted.
-> Try next inside src/free_claude_code/core/anthropic/sse_aggregation.py. Keep the output contract identical. Measure aggregate_ir and decode_ir again before any submission.
->
-> 2026-10-13, episode `8859ceb4af79` (no candidate)
 
 ## Licence
 
