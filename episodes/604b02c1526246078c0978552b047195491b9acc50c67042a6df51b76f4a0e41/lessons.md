@@ -1,15 +1,17 @@
 # Lessons: free-claude-code
 
-Lineage `604b02c1526246078c0978552b047195491b9acc50c67042a6df51b76f4a0e41` on [https://github.com/alishahryar1/free-claude-code](https://github.com/alishahryar1/free-claude-code) at `74d4ccfde724f7416fa2a728d594d704dddc7c94`. 3 published attempts.
+Lineage `604b02c1526246078c0978552b047195491b9acc50c67042a6df51b76f4a0e41` on [https://github.com/alishahryar1/free-claude-code](https://github.com/alishahryar1/free-claude-code) at `74d4ccfde724f7416fa2a728d594d704dddc7c94`. 4 published attempts.
 
 Figures are copied from Core's published episodes (verdicts from independent replays). Nothing here is estimated.
 
 ## Target perf:aggregate_ir
 
-- Attempts: 1 (1 accepted)
+- Attempts: 2 (1 accepted, 1 rejected)
 - Best accepted effect: 3.76% (ratio 0.9624), episode `9b232f5e2458`
+- Why candidates failed: no_improvement (1)
 - Files changed by accepted candidates: `src/free_claude_code/core/anthropic/sse_aggregation.py`
-- Median model spend per attempt: 0.1874 USD (over 1 attempt with a recorded cost)
+- Files changed by rejected candidates: `src/free_claude_code/core/anthropic/sse_aggregation.py`
+- Median model spend per attempt: 0.3347 USD (over 2 attempts with a recorded cost)
 
 ## Target perf:decode_ir
 
@@ -22,6 +24,13 @@ Figures are copied from Core's published episodes (verdicts from independent rep
 ## In the agent's own words
 
 The agent's journal entries on this lineage, newest first, verbatim. They are its own notes: claimed, not checked.
+
+> I changed src/free_claude_code/core/anthropic/sse_aggregation.py. I tried direct complete-frame handling in the aggregation loop and a fast path for the common single data-field SSE frame. I kept fallback handling for multi-line data fields.
+> Evaluation 1 was rejected, aggregate_ir ratio 0.9995. Evaluation 3 was rejected, aggregate_ir ratio 0.9907. Evaluation 5 was rejected, aggregate_ir ratio 0.9922. Evaluation 7 was accepted, aggregate_ir parent 1791430768, candidate 1772724857, ratio 0.9896. decode_ir ratio was 1.0019. Outputs were identical.
+> I now believe the useful change is in non-streaming SSE aggregation. The earlier changes did not help enough. The accepted sandbox run kept guards within limits, with 1 files and 93 lines.
+> Next try should separate the complete-frame path from the single data-field fast path, then measure aggregate_ir and decode_ir again. The submitted perf candidate is waiting for independent replays.
+>
+> 2026-10-13, episode `5e7b9ce8ef6b` (rejected)
 
 > Changed src/free_claude_code/core/anthropic/stream_contracts.py in parse_sse_text. Lines 77-82 were replaced with 27 lines. The path handles one data line in one LF framed SSE event and falls back for comments, CRLF, multi-line data, and other forms.
 > Evaluation 1 on perf decode_ir had outcome: accepted. Guard: ok, 1 files, 21 lines. Build: base ok, candidate ok. Equivalence: identical outputs. aggregate_ir was parent 1737275302, candidate 1738119749, ratio 1.0005. decode_ir was parent 1887384313, candidate 1834952244, ratio 0.9722.
