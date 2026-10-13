@@ -1,18 +1,18 @@
 # Lessons: free-claude-code
 
-Lineage `604b02c1526246078c0978552b047195491b9acc50c67042a6df51b76f4a0e41` on [https://github.com/alishahryar1/free-claude-code](https://github.com/alishahryar1/free-claude-code) at `74d4ccfde724f7416fa2a728d594d704dddc7c94`. 19 published attempts.
+Lineage `604b02c1526246078c0978552b047195491b9acc50c67042a6df51b76f4a0e41` on [https://github.com/alishahryar1/free-claude-code](https://github.com/alishahryar1/free-claude-code) at `74d4ccfde724f7416fa2a728d594d704dddc7c94`. 20 published attempts.
 
 Figures are copied from Core's published episodes (verdicts from independent replays). Nothing here is estimated.
 
 ## Target perf:aggregate_ir
 
-- Attempts: 9 (3 accepted, 1 rejected, 5 no candidate)
+- Attempts: 10 (3 accepted, 1 rejected, 6 no candidate)
 - Best accepted effect: 3.76% (ratio 0.9624), episode `9b232f5e2458`
 - Accepted effects: 3.76%, 1.19%, 1.03%
 - Why candidates failed: no_improvement (1)
 - Files changed by accepted candidates: `src/free_claude_code/core/anthropic/sse_aggregation.py`
 - Files changed by rejected candidates: `src/free_claude_code/core/anthropic/sse_aggregation.py`
-- Median model spend per attempt: 0.6132 USD (over 9 attempts with a recorded cost)
+- Median model spend per attempt: 0.6531 USD (over 10 attempts with a recorded cost)
 
 ## Target perf:decode_ir
 
@@ -25,6 +25,13 @@ Figures are copied from Core's published episodes (verdicts from independent rep
 ## In the agent's own words
 
 The agent's journal entries on this lineage, newest first, verbatim. They are its own notes: claimed, not checked.
+
+> Tried changes in src/free_claude_code/core/anthropic/sse_aggregation.py for aggregate_anthropic_sse_to_message. Read stream_contracts.py, lineage_bench.py, streaming/decoder.py, and lineage_equiv.py. Reworked small block assembly, tried a larger helper path, then reverted most of it.
+> evaluation 1 was "rejected (no_improvement: worst ratio 0.9990 vs required 0.9900)", with "equivalence: identical outputs". evaluation 3 was "rejected ... 0.9993 vs required 0.9900". evaluation 5 was "rejected ... 1.0115 vs required 0.9900". evaluation 7 was "rejected ... 0.9999 vs required 0.9900". build was "base ok, candidate ok" each time.
+> The code is not spending enough in the edited branches for these shape changes to matter. The larger rewrite hurt aggregate_ir. The small rewrites did not help enough.
+> Try a narrower change from lineage_bench.py. No candidate was submitted.
+>
+> 2026-10-13, episode `85641c985284` (no candidate)
 
 > I changed src/free_claude_code/core/anthropic/sse_aggregation.py in _sse_payload and aggregate_anthropic_sse_to_message. I tried a module-level JSONDecoder and raw_decode for the SSE single-data fast path. The stripped json.loads path stays as fallback.
 > evaluation 1 was rejected: aggregate_ir parent 1574925205, candidate 1576000014, ratio 1.0007. evaluation 3 was rejected: aggregate_ir parent 1574926907, candidate 1577424316, ratio 1.0016. Those changes did not help. evaluation 5 was accepted in sandbox: aggregate_ir parent 1574937344, candidate 1553729831, ratio 0.9865. Equivalence identical outputs. guard: ok, 1 files, 20 lines.
@@ -53,13 +60,6 @@ The agent's journal entries on this lineage, newest first, verbatim. They are it
 > Try a smaller change inside AnthropicSSEDecoder.feed. Measure decode_ir before changing parse_sse_text again.
 >
 > 2026-10-13, episode `1400bf343d61` (no candidate)
-
-> I tried to reduce aggregate_ir in src/free_claude_code/core/anthropic/sse_aggregation.py. I changed aggregate_anthropic_sse_to_message and helpers. Edits touched lines 95-131, 100-120, 37-42, 72-77, 22-47, then rewrote lines 1-240 as 209 lines.
-> evaluation 1 was rejected: worst ratio 0.9996 vs required 0.9900. evaluation 3 was rejected: worst ratio 0.9997 vs required 0.9900. evaluation 5 was rejected: worst ratio 0.9997 vs required 0.9900. evaluation 7 was rejected: worst ratio 1.0002 vs required 0.9900. All had build ok and identical outputs. The session stopped without submitting a change.
-> The code stayed equivalent. The edits did not help. The target metric did not clear the required ratio, and decode_ir stayed at 1.0000, 1.0001, 1.0003, then 1.0009.
-> Next try should isolate _sse_payload, parse_sse, and AnthropicSSED... before changing aggregate_anthropic_sse_to_message again.
->
-> 2026-10-13, episode `5534779bd764` (no candidate)
 
 ## Licence
 
