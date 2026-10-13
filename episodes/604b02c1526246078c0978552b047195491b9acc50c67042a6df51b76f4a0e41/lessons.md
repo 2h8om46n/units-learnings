@@ -1,6 +1,6 @@
 # Lessons: free-claude-code
 
-Lineage `604b02c1526246078c0978552b047195491b9acc50c67042a6df51b76f4a0e41` on [https://github.com/alishahryar1/free-claude-code](https://github.com/alishahryar1/free-claude-code) at `74d4ccfde724f7416fa2a728d594d704dddc7c94`. 2 published attempts.
+Lineage `604b02c1526246078c0978552b047195491b9acc50c67042a6df51b76f4a0e41` on [https://github.com/alishahryar1/free-claude-code](https://github.com/alishahryar1/free-claude-code) at `74d4ccfde724f7416fa2a728d594d704dddc7c94`. 3 published attempts.
 
 Figures are copied from Core's published episodes (verdicts from independent replays). Nothing here is estimated.
 
@@ -13,14 +13,22 @@ Figures are copied from Core's published episodes (verdicts from independent rep
 
 ## Target perf:decode_ir
 
-- Attempts: 1 (1 accepted)
-- Best accepted effect: 1.23% (ratio 0.9877), episode `e1900872ce15`
+- Attempts: 2 (2 accepted)
+- Best accepted effect: 2.49% (ratio 0.9751), episode `710c5e2617d0`
+- Accepted effects: 2.49%, 1.23%
 - Files changed by accepted candidates: `src/free_claude_code/core/anthropic/stream_contracts.py`, `src/free_claude_code/core/anthropic/streaming/decoder.py`
-- Median model spend per attempt: 0.3029 USD (over 1 attempt with a recorded cost)
+- Median model spend per attempt: 0.2983 USD (over 2 attempts with a recorded cost)
 
 ## In the agent's own words
 
 The agent's journal entries on this lineage, newest first, verbatim. They are its own notes: claimed, not checked.
+
+> Changed src/free_claude_code/core/anthropic/stream_contracts.py in parse_sse_text. Lines 77-82 were replaced with 27 lines. The path handles one data line in one LF framed SSE event and falls back for comments, CRLF, multi-line data, and other forms.
+> Evaluation 1 on perf decode_ir had outcome: accepted. Guard: ok, 1 files, 21 lines. Build: base ok, candidate ok. Equivalence: identical outputs. aggregate_ir was parent 1737275302, candidate 1738119749, ratio 1.0005. decode_ir was parent 1887384313, candidate 1834952244, ratio 0.9722.
+> The generic SSE parser still covers the slower forms. The common single-event frame can skip regex line splitting and parse_sse_lines. The guard did not show a problem outside the target.
+> Next try the same fast path around AnthropicSSEDecoder if replay confirms decode_ir. Check more inputs from parse_sse_text and parse_sse_lines before changing more parser code.
+>
+> 2026-10-13, episode `710c5e2617d0` (accepted)
 
 > I first changed stream_contracts.py lines 76-81, then backed most of that out. I then changed decoder.py lines 27-32 and stream_contracts.py lines 68-72. The submitted perf candidate changed 2 files, 9 lines.
 > evaluation 1 was rejected: decode_ir ratio 1.1857 vs required 0.9900. evaluation 3 was rejected: decode_ir ratio 0.9913 vs required 0.9900. evaluation 5 was accepted: decode_ir parent 1920631861, candidate 1897097543, ratio 0.9877. Outputs were identical.
