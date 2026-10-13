@@ -1,18 +1,18 @@
 # Lessons: free-claude-code
 
-Lineage `604b02c1526246078c0978552b047195491b9acc50c67042a6df51b76f4a0e41` on [https://github.com/alishahryar1/free-claude-code](https://github.com/alishahryar1/free-claude-code) at `74d4ccfde724f7416fa2a728d594d704dddc7c94`. 18 published attempts.
+Lineage `604b02c1526246078c0978552b047195491b9acc50c67042a6df51b76f4a0e41` on [https://github.com/alishahryar1/free-claude-code](https://github.com/alishahryar1/free-claude-code) at `74d4ccfde724f7416fa2a728d594d704dddc7c94`. 19 published attempts.
 
 Figures are copied from Core's published episodes (verdicts from independent replays). Nothing here is estimated.
 
 ## Target perf:aggregate_ir
 
-- Attempts: 8 (2 accepted, 1 rejected, 5 no candidate)
+- Attempts: 9 (3 accepted, 1 rejected, 5 no candidate)
 - Best accepted effect: 3.76% (ratio 0.9624), episode `9b232f5e2458`
-- Accepted effects: 3.76%, 1.03%
+- Accepted effects: 3.76%, 1.19%, 1.03%
 - Why candidates failed: no_improvement (1)
 - Files changed by accepted candidates: `src/free_claude_code/core/anthropic/sse_aggregation.py`
 - Files changed by rejected candidates: `src/free_claude_code/core/anthropic/sse_aggregation.py`
-- Median model spend per attempt: 0.5940 USD (over 8 attempts with a recorded cost)
+- Median model spend per attempt: 0.6132 USD (over 9 attempts with a recorded cost)
 
 ## Target perf:decode_ir
 
@@ -25,6 +25,13 @@ Figures are copied from Core's published episodes (verdicts from independent rep
 ## In the agent's own words
 
 The agent's journal entries on this lineage, newest first, verbatim. They are its own notes: claimed, not checked.
+
+> I changed src/free_claude_code/core/anthropic/sse_aggregation.py in _sse_payload and aggregate_anthropic_sse_to_message. I tried a module-level JSONDecoder and raw_decode for the SSE single-data fast path. The stripped json.loads path stays as fallback.
+> evaluation 1 was rejected: aggregate_ir parent 1574925205, candidate 1576000014, ratio 1.0007. evaluation 3 was rejected: aggregate_ir parent 1574926907, candidate 1577424316, ratio 1.0016. Those changes did not help. evaluation 5 was accepted in sandbox: aggregate_ir parent 1574937344, candidate 1553729831, ratio 0.9865. Equivalence identical outputs. guard: ok, 1 files, 20 lines.
+> I now believe avoiding strip and json.loads on the common frame is the useful part. Larger control-flow changes add work here.
+> Next try the same raw_decode pattern only after checking stream_contracts.py. Leave streaming/decoder.py unchanged unless decode_ir is the target.
+>
+> 2026-10-13, episode `201643ef8faf` (accepted)
 
 > I changed parse_sse_text, feed_frames, and AnthropicSSEDecoder feed code in decoder.py and stream_contracts.py. The last version parsed frames directly in feed and avoided some intermediate allocations.
 > evaluation 7 was rejected with no_improvement: worst ratio 0.9972 vs required 0.9900. decode_ir was parent 1549727003, candidate 1545373932, ratio 0.9972. aggregate_ir was parent 1592341369, candidate 1595549034, ratio 1.0020. Build passed and equivalence was identical outputs.
@@ -53,13 +60,6 @@ The agent's journal entries on this lineage, newest first, verbatim. They are it
 > Next try should isolate _sse_payload, parse_sse, and AnthropicSSED... before changing aggregate_anthropic_sse_to_message again.
 >
 > 2026-10-13, episode `5534779bd764` (no candidate)
-
-> I tried bounded decode-path reductions in decoder framing and fast SSE event parsing. I edited src/free_claude_code/core/anthropic/streaming/decoder.py and src/free_claude_code/core/anthropic/stream_contracts.py, including AnthropicSSEDecoder.feed and parse_sse_text.
-> evaluation 1 was rejected with decode_ir ratio 0.9991. evaluation 3 was rejected with decode_ir ratio 0.9991. evaluation 5 was rejected with decode_ir ratio 0.9968. evaluation 7 was rejected with decode_ir ratio 0.9961. The required ratio was 0.9900. Builds were ok. Equivalence was identical outputs. Guards were ok.
-> I now believe these bounded changes did not help enough. The best measured decode_ir ratio was 0.9961. aggregate_ir stayed near 1.0000 and did not show useful movement.
-> Next try a different decode_ir path. Re-read lineage_bench.py and lineage_equiv.py before changing more parser code.
->
-> 2026-10-13, episode `5bc22d6ac3a6` (no candidate)
 
 ## Licence
 
