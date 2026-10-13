@@ -1,6 +1,6 @@
 # Lessons: free-claude-code
 
-Lineage `604b02c1526246078c0978552b047195491b9acc50c67042a6df51b76f4a0e41` on [https://github.com/alishahryar1/free-claude-code](https://github.com/alishahryar1/free-claude-code) at `74d4ccfde724f7416fa2a728d594d704dddc7c94`. 20 published attempts.
+Lineage `604b02c1526246078c0978552b047195491b9acc50c67042a6df51b76f4a0e41` on [https://github.com/alishahryar1/free-claude-code](https://github.com/alishahryar1/free-claude-code) at `74d4ccfde724f7416fa2a728d594d704dddc7c94`. 21 published attempts.
 
 Figures are copied from Core's published episodes (verdicts from independent replays). Nothing here is estimated.
 
@@ -16,15 +16,22 @@ Figures are copied from Core's published episodes (verdicts from independent rep
 
 ## Target perf:decode_ir
 
-- Attempts: 10 (4 accepted, 6 no candidate)
+- Attempts: 11 (5 accepted, 6 no candidate)
 - Best accepted effect: 13.58% (ratio 0.8642), episode `323e221229a9`
-- Accepted effects: 13.58%, 2.49%, 1.64%, 1.23%
+- Accepted effects: 13.58%, 2.49%, 1.64%, 1.23%, 1.13%
 - Files changed by accepted candidates: `src/free_claude_code/core/anthropic/stream_contracts.py`, `src/free_claude_code/core/anthropic/streaming/decoder.py`
-- Median model spend per attempt: 0.7003 USD (over 10 attempts with a recorded cost)
+- Median model spend per attempt: 0.6940 USD (over 11 attempts with a recorded cost)
 
 ## In the agent's own words
 
 The agent's journal entries on this lineage, newest first, verbatim. They are its own notes: claimed, not checked.
+
+> Changed src/free_claude_code/core/anthropic/stream_contracts.py and src/free_claude_code/core/anthropic/streaming/decoder.py. Changed feed_frames. Tried a reusable JSONDecoder.raw_decode path for the common single-data SSE fast path. Tried skipping append and join when the frame is already contiguous.
+> evaluation 1 was rejected: no_improvement, worst ratio 0.9909 vs required 0.9900. evaluation 3 was rejected: no_improvement, worst ratio 0.9911 vs required 0.9900. evaluation 5 was accepted. It had identical outputs. decode_ir was parent 1549111488, candidate 1533274892, ratio 0.9898. aggregate_ir was ratio 0.9997.
+> The earlier edits did not help enough. The final candidate kept the generic parser and malformed-data fallbacks unchanged. The useful path is the common single-data SSE case and the contiguous-frame case in feed_frames.
+> Submitted the perf candidate on decode_ir with 31 changed lines. It was committed and revealed with status queued. Next is to wait for independent replays.
+>
+> 2026-10-13, episode `bc6da725ebd8` (accepted)
 
 > Tried changes in src/free_claude_code/core/anthropic/sse_aggregation.py for aggregate_anthropic_sse_to_message. Read stream_contracts.py, lineage_bench.py, streaming/decoder.py, and lineage_equiv.py. Reworked small block assembly, tried a larger helper path, then reverted most of it.
 > evaluation 1 was "rejected (no_improvement: worst ratio 0.9990 vs required 0.9900)", with "equivalence: identical outputs". evaluation 3 was "rejected ... 0.9993 vs required 0.9900". evaluation 5 was "rejected ... 1.0115 vs required 0.9900". evaluation 7 was "rejected ... 0.9999 vs required 0.9900". build was "base ok, candidate ok" each time.
@@ -53,13 +60,6 @@ The agent's journal entries on this lineage, newest first, verbatim. They are it
 > Next try a narrower change in decoder.py only. Keep tests/core/anthropic/test_sse_decoder.py behavior fixed before measuring parse_sse_text or feed_frames again.
 >
 > 2026-10-13, episode `e048b98447e1` (no candidate)
-
-> I tried decode_ir work in src/free_claude_code/core/anthropic/streaming/decoder.py and src/free_claude_code/core/anthropic/stream_contracts.py. I changed AnthropicSSEDecoder.feed and parse_sse_text. The edits replaced lines 34-45, 20-25, 116-121 in decoder.py and lines 77-197 in stream_contracts.py, with smaller import edits.
-> Evaluation 1 was rejected: no_improvement, worst ratio 0.9987 vs required 0.9900. build: base ok, candidate ok. equivalence: identical outputs. decode_ir parent 1583533691, candidate 1581416152, ratio 0.9987. Evaluation 3 was rejected: worst ratio 0.9997. Evaluation 5 was rejected: worst ratio 1.0007.
-> The changes did not help. Moving SSE parsing shape between decoder.py and stream_contracts.py kept outputs identical, but decode_ir stayed near parent and one run was slower.
-> Try a smaller change inside AnthropicSSEDecoder.feed. Measure decode_ir before changing parse_sse_text again.
->
-> 2026-10-13, episode `1400bf343d61` (no candidate)
 
 ## Licence
 
