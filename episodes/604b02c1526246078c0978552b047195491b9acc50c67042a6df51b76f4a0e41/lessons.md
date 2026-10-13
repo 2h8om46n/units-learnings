@@ -1,6 +1,6 @@
 # Lessons: free-claude-code
 
-Lineage `604b02c1526246078c0978552b047195491b9acc50c67042a6df51b76f4a0e41` on [https://github.com/alishahryar1/free-claude-code](https://github.com/alishahryar1/free-claude-code) at `74d4ccfde724f7416fa2a728d594d704dddc7c94`. 16 published attempts.
+Lineage `604b02c1526246078c0978552b047195491b9acc50c67042a6df51b76f4a0e41` on [https://github.com/alishahryar1/free-claude-code](https://github.com/alishahryar1/free-claude-code) at `74d4ccfde724f7416fa2a728d594d704dddc7c94`. 17 published attempts.
 
 Figures are copied from Core's published episodes (verdicts from independent replays). Nothing here is estimated.
 
@@ -16,15 +16,22 @@ Figures are copied from Core's published episodes (verdicts from independent rep
 
 ## Target perf:decode_ir
 
-- Attempts: 8 (4 accepted, 4 no candidate)
+- Attempts: 9 (4 accepted, 5 no candidate)
 - Best accepted effect: 13.58% (ratio 0.8642), episode `323e221229a9`
 - Accepted effects: 13.58%, 2.49%, 1.64%, 1.23%
 - Files changed by accepted candidates: `src/free_claude_code/core/anthropic/stream_contracts.py`, `src/free_claude_code/core/anthropic/streaming/decoder.py`
-- Median model spend per attempt: 0.5988 USD (over 8 attempts with a recorded cost)
+- Median model spend per attempt: 0.6940 USD (over 9 attempts with a recorded cost)
 
 ## In the agent's own words
 
 The agent's journal entries on this lineage, newest first, verbatim. They are its own notes: claimed, not checked.
+
+> I changed src/free_claude_code/core/anthropic/streaming/decoder.py and src/free_claude_code/core/anthropic/stream_contracts.py. I tried targeted reductions in AnthropicSSEDecoder, parse_sse_text, and feed_frames. The changes touched decoder framing, SSE parsing, imports, and aliasing.
+> evaluation 1 was rejected: no_improvement, worst ratio 0.9986 vs required 0.9900. decode_ir was parent 1548400607, candidate 1546158107, ratio 0.9986. evaluation 3 was rejected at 0.9983. evaluation 5 was rejected at 0.9985. evaluation 7 was rejected because 2 stable tests fail. No candidate was submitted.
+> The code has little slack in this path. Small framing and parsing edits moved decode_ir, but not enough. The aliasing tweak was wrong for unnamed events at split boundaries.
+> Next try a narrower change in decoder.py only. Keep tests/core/anthropic/test_sse_decoder.py behavior fixed before measuring parse_sse_text or feed_frames again.
+>
+> 2026-10-13, episode `e048b98447e1` (no candidate)
 
 > I tried decode_ir work in src/free_claude_code/core/anthropic/streaming/decoder.py and src/free_claude_code/core/anthropic/stream_contracts.py. I changed AnthropicSSEDecoder.feed and parse_sse_text. The edits replaced lines 34-45, 20-25, 116-121 in decoder.py and lines 77-197 in stream_contracts.py, with smaller import edits.
 > Evaluation 1 was rejected: no_improvement, worst ratio 0.9987 vs required 0.9900. build: base ok, candidate ok. equivalence: identical outputs. decode_ir parent 1583533691, candidate 1581416152, ratio 0.9987. Evaluation 3 was rejected: worst ratio 0.9997. Evaluation 5 was rejected: worst ratio 1.0007.
@@ -53,13 +60,6 @@ The agent's journal entries on this lineage, newest first, verbatim. They are it
 > Try next inside src/free_claude_code/core/anthropic/sse_aggregation.py. Keep the output contract identical. Measure aggregate_ir and decode_ir again before any submission.
 >
 > 2026-10-13, episode `8859ceb4af79` (no candidate)
-
-> Changed src/free_claude_code/core/anthropic/stream_contracts.py in parse_sse_text and parse_sse_lines, and src/free_claude_code/core/anthropic/streaming/decoder.py in AnthropicSSEDecoder. Tried avoiding per-frame parse list allocation, reducing boundary scans, and avoiding joins for complete chunk-local frames.
-> Own sandbox evaluations had build ok and identical outputs. evaluation 1 was rejected: decode_ir ratio 0.9992, aggregate_ir ratio 1.0005. evaluation 3 was rejected: decode_ir ratio 0.9984, aggregate_ir ratio 1.0002. evaluation 5 was rejected: decode_ir ratio 0.9964, aggregate_ir ratio 0.9990. evaluation 7 was rejected: decode_ir ratio 0.9955, aggregate_ir ratio 0.9984.
-> The code kept equivalence but did not meet the required 0.9900 decode_ir ratio. The session stopped without submitting a change.
-> Try a narrower change in AnthropicSSEDecoder. Measure boundary handling separately from parse_sse_text. Stop if decode_ir stays above ratio 0.9900.
->
-> 2026-10-13, episode `c53eda6f029c` (no candidate)
 
 ## Licence
 
