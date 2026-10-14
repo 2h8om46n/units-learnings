@@ -1,0 +1,812 @@
+{
+  "schema": "lineage-episode/1",
+  "episode_id": "2996d12b8968edf66e7c725fd17f93f18bdde938beaa139cad068ca1cffff3e4",
+  "seq": 576,
+  "network": "mainnet",
+  "session_id": "6b4a2599e70b8d1304d92a398cae2c418a921cf6a46d6a6ed57544da146bda84",
+  "agent": {
+    "id": "9fmKzMczCiqZxbigomZ8A2UcczHiPyvE1MPnXWTnCqEC",
+    "name": "Solkern",
+    "hidden": false,
+    "hosted": true,
+    "identity_mode": "purchased",
+    "soul": {
+      "digest": "4fc66512fe6da5c641f4ef5e10ffc03342d35557c17890df2c2527b56e2b82a3",
+      "seq": 1,
+      "stored_at": 1791912763222,
+      "declared_model": {
+        "provider": "openai",
+        "id": "gpt-5.5"
+      }
+    }
+  },
+  "model": {
+    "provider": "openai",
+    "models": [
+      "openai/gpt-5.5"
+    ],
+    "route": {
+      "via": "openrouter",
+      "model": {
+        "provider": "openai",
+        "id": "gpt-5.5"
+      },
+      "upstream": [
+        "OpenAI"
+      ]
+    },
+    "harness": {
+      "name": "openai-compat",
+      "version": "openai-compat/1",
+      "digest": "a8ca2c565d6208df2ea251b6029e67374bfadeba6debee5405dac9a68e5c4929",
+      "provider": "openrouter"
+    },
+    "source": "worker_report"
+  },
+  "task": {
+    "recipe": {
+      "recipe_id": "5a94a0b9abb0aa1fc55053709c8c0fb809a765b93d9316160d1306e56bd4fc5a",
+      "name": "free-claude-code",
+      "class": "python",
+      "repo": "https://github.com/alishahryar1/free-claude-code",
+      "commit": "74d4ccfde724f7416fa2a728d594d704dddc7c94"
+    },
+    "lineage_id": "604b02c1526246078c0978552b047195491b9acc50c67042a6df51b76f4a0e41",
+    "parent_gen_id": "d33516a55ace565cf9fb77a5c355ad96f7adb8748b5674ee4988f100ba0651c0",
+    "parent_height": 8,
+    "metrics": [
+      {
+        "name": "aggregate_ir",
+        "kind": "perf",
+        "direction": "lower",
+        "deterministic": true,
+        "min_effect": 0.01
+      },
+      {
+        "name": "decode_ir",
+        "kind": "perf",
+        "direction": "lower",
+        "deterministic": true,
+        "min_effect": 0.01
+      }
+    ],
+    "target": {
+      "kind": "perf",
+      "target": "decode_ir",
+      "source": "worker_report.planned"
+    },
+    "baseline": null
+  },
+  "plan": {
+    "planned": {
+      "kind": "perf",
+      "target": "decode_ir",
+      "note": null
+    },
+    "opening_note": "The previous accepted decode work already optimized event boundary detection and the common single-data JSON parse path, so I should avoid repeating broad parser rewrites that only produced small or unstable gains. I’ll inspect the current decoder and benchmark-related paths for a small remaining hot allocation or branch in decode-only code.",
+    "source": "worker_report + session notes"
+  },
+  "hypotheses": [
+    "The previous accepted decode work already optimized event boundary detection and the common single-data JSON parse path, so I should avoid repeating broad parser rewrites that only produced small or unstable gains. I’ll inspect the current decoder and benchmark-related paths for a small remaining hot allocation or branch in decode-only code."
+  ],
+  "actions": [
+    {
+      "seq": 1,
+      "kind": "note",
+      "at": 1791936794002,
+      "text": "The previous accepted decode work already optimized event boundary detection and the common single-data JSON parse path, so I should avoid repeating broad parser rewrites that only produced small or unstable gains. I’ll inspect the current decoder and benchmark-related paths for a small remaining hot allocation or branch in decode-only code."
+    },
+    {
+      "seq": 2,
+      "kind": "list",
+      "path": "src/free_claude_code/core/anthropic",
+      "count": 25,
+      "at": 1791936794003
+    },
+    {
+      "seq": 3,
+      "kind": "list",
+      "path": "src/free_claude_code/core/anthropic/streaming",
+      "count": 5,
+      "at": 1791936794005
+    },
+    {
+      "seq": 4,
+      "kind": "read",
+      "path": "src/free_claude_code/core/anthropic/streaming/decoder.py",
+      "start_line": 1,
+      "end_line": 102,
+      "content_sha256": "c08345c9fa394b9d65228a5bd90701bdf644acc836dad1815b28826db7682567",
+      "at": 1791936794005
+    },
+    {
+      "seq": 5,
+      "kind": "read",
+      "path": "src/free_claude_code/core/anthropic/stream_contracts.py",
+      "start_line": 1,
+      "end_line": 240,
+      "content_sha256": "79be98884ff400b5155e818bd068f13c43333955aee90fa919278f465964edb7",
+      "at": 1791936794006
+    },
+    {
+      "seq": 6,
+      "kind": "read",
+      "path": "src/free_claude_code/core/anthropic/stream_contracts.py",
+      "start_line": 240,
+      "end_line": 269,
+      "content_sha256": "79be98884ff400b5155e818bd068f13c43333955aee90fa919278f465964edb7",
+      "at": 1791936796705
+    },
+    {
+      "seq": 7,
+      "kind": "read",
+      "path": "src/free_claude_code/core/anthropic/streaming/emitter.py",
+      "start_line": 1,
+      "end_line": 63,
+      "content_sha256": "22c784f35900a3571e600de1272df67f3632ac1ed173a07bc8baa10a7e2bf33b",
+      "at": 1791936796706
+    },
+    {
+      "seq": 8,
+      "kind": "read",
+      "path": "lineage_bench.py",
+      "start_line": 1,
+      "end_line": 139,
+      "content_sha256": "1913dc1a4c90c391cabbb299bd2d5736d3c984d85dd19b6294e2490faf28be8b",
+      "at": 1791936796707
+    },
+    {
+      "seq": 9,
+      "kind": "read",
+      "path": "lineage_equiv.py",
+      "start_line": 1,
+      "end_line": 89,
+      "content_sha256": "6b0410014ad1f7805d47ed86e526404b89bf9b1d98755f5fd416be1a67880dcf",
+      "at": 1791936796707
+    },
+    {
+      "seq": 10,
+      "kind": "search",
+      "query": "parse_sse_text|AnthropicSSEDecoder|feed_frames|SSEEvent",
+      "matches": 511,
+      "at": 1791936808622
+    },
+    {
+      "seq": 11,
+      "kind": "edit",
+      "path": "src/free_claude_code/core/anthropic/stream_contracts.py",
+      "start_line": 18,
+      "end_line": 19,
+      "lines_before": 2,
+      "lines_after": 4,
+      "at": 1791936821537,
+      "diff": "--- a/src/free_claude_code/core/anthropic/stream_contracts.py\n+++ b/src/free_claude_code/core/anthropic/stream_contracts.py\n@@ -18,2 +18,4 @@\n-_JSON_DECODER = json.JSONDecoder()\n-\n+_JSON_DECODER = json.JSONDecoder()\n+_FAST_PARSE_FALLBACK = object()\n+_FAST_PARSE_FILTERED = object()\n+"
+    },
+    {
+      "seq": 12,
+      "kind": "edit",
+      "path": "src/free_claude_code/core/anthropic/stream_contracts.py",
+      "start_line": 81,
+      "end_line": 136,
+      "lines_before": 56,
+      "lines_after": 67,
+      "at": 1791936831263,
+      "diff": "--- a/src/free_claude_code/core/anthropic/stream_contracts.py\n+++ b/src/free_claude_code/core/anthropic/stream_contracts.py\n@@ -81,56 +81,67 @@\n-def parse_sse_text(\n-    text: str, *, event_names: frozenset[str] | None = None\n-) -> list[SSEEvent]:\n-    # SSE uses CR/LF framing; Unicode line separators can occur inside JSON text.\n-    event_start = 0\n-    raw_prefix = \"\"\n-    if text.startswith(\":\"):\n-        comment_lf = text.find(\"\\n\")\n-        if comment_lf != -1:\n-            comment_end = comment_lf - 1 if text[comment_lf - 1] == \"\\r\" else comment_lf\n-            event_start = comment_lf + 1\n-            raw_prefix = text[:comment_end] + \"\\n\"\n-    if text.startswith(\"event:\", event_start):\n-        event_lf = text.find(\"\\n\", event_start)\n-        data_start = event_lf + 1\n-        if event_lf != -1 and text.startswith(\"data:\", data_start):\n-            event_end = event_lf - 1 if text[event_lf - 1] == \"\\r\" else event_lf\n-            data_lf = text.find(\"\\n\", data_start)\n-            if data_lf != -1 and text[data_lf + 1 :] in (\"\\n\", \"\\r\\n\"):\n-                data_end = data_lf - 1 if text[data_lf - 1] == \"\\r\" else data_lf\n-                if text[event_start + 6] == \" \":\n-                    current_event = text[event_start + 7 : event_end]\n-                else:\n-                    current_event = text[event_start + 6 : event_end].strip()\n-                if (\n-                    event_names is not None\n-                    and current_event\n-                    and current_event not in event_names\n-                ):\n-                    return []\n-                json_start = data_start + 5\n-                leading_space = json_start < data_end and text[json_start] == \" \"\n-                if leading_space:\n-                    json_start += 1\n-                    has_data = json_start < data_end\n-                else:\n-                    has_data = bool(text[json_start:data_end].strip())\n-                data: dict[str, Any]\n-                try:\n-                    if has_data:\n-                        parsed, json_end = _JSON_DECODER.raw_decode(text, json_start)\n-                        if json_end != data_end and text[json_end:data_end].strip():\n-                            raise json.JSONDecodeError(\"Extra data\", text, json_end)\n-                    else:\n-                        parsed = {}\n-                    data = parsed if isinstance(parsed, dict) else {\"value\": parsed}\n-                except json.JSONDecodeError:\n-                    if leading_space:\n-                        data_text = text[json_start:data_end]\n-                    else:\n-                        data_text = text[data_start + 5 : data_end].strip()\n-                    data = {\"raw\": data_text}\n-                raw = raw_prefix + text[event_start:event_end] + \"\\n\" + text[data_start:data_end]\n-                return [SSEEvent(current_event, data, raw)]\n-    return parse_sse_lines(re.split(r\"\\r\\n|\\r|\\n\", text), event_names=event_names)\n-\n+def parse_sse_text(\n+    text: str, *, event_names: frozenset[str] | None = None\n+) -> list[SSEEvent]:\n+    event = _parse_sse_text_event(text, event_names)\n+    if event is _FAST_PARSE_FILTERED:\n+        return []\n+    if event is not _FAST_PARSE_FALLBACK:\n+        return [event]\n+    return parse_sse_lines(re.split(r\"\\r\\n|\\r|\\n\", text), event_names=event_names)\n+\n+\n+def _parse_sse_text_event(\n+    text: str, event_names: frozenset[str] | None\n+) -> SSEEvent | object:\n+    # SSE uses CR/LF framing; Unicode line separators can occur inside JSON text.\n+    event_start = 0\n+    raw_prefix = \"\"\n+    if text.startswith(\":\"):\n+        comment_lf = text.find(\"\\n\")\n+        if comment_lf != -1:\n+            comment_end = comment_lf - 1 if text[comment_lf - 1] == \"\\r\" else comment_lf\n+            event_start = comment_lf + 1\n+            raw_prefix = text[:comment_end] + \"\\n\"\n+    if text.startswith(\"event:\", event_start):\n+        event_lf = text.find(\"\\n\", event_start)\n+        data_start = event_lf + 1\n+        if event_lf != -1 and text.startswith(\"data:\", data_start):\n+            event_end = event_lf - 1 if text[event_lf - 1] == \"\\r\" else event_lf\n+            data_lf = text.find(\"\\n\", data_start)\n+            if data_lf != -1 and text[data_lf + 1 :] in (\"\\n\", \"\\r\\n\"):\n+                data_end = data_lf - 1 if text[data_lf - 1] == \"\\r\" else data_lf\n+                if text[event_start + 6] == \" \":\n+                    current_event = text[event_start + 7 : event_end]\n+                else:\n+                    current_event = text[event_start + 6 : event_end].strip()\n+                if (\n+                    event_names is not None\n+                    and current_event\n+                    and current_event not in event_names\n+                ):\n+                    return _FAST_PARSE_FILTERED\n+                json_start = data_start + 5\n+                leading_space = json_start < data_end and text[json_start] == \" \"\n+                if leading_space:\n+                    json_start += 1\n+                    has_data = json_start < data_end\n+                else:\n+                    has_data = bool(text[json_start:data_end].strip())\n+                data: dict[str, Any]\n+                try:\n+                    if has_data:\n+                        parsed, json_end = _JSON_DECODER.raw_decode(text, json_start)\n+                        if json_end != data_end and text[json_end:data_end].strip():\n+                            raise json.JSONDecodeError(\"Extra data\", text, json_end)\n+                    else:\n+                        parsed = {}\n+                    data = parsed if isinstance(parsed, dict) else {\"value\": parsed}\n+                except json.JSONDecodeError:\n+                    if leading_space:\n+                        data_text = text[json_start:data_end]\n+                    else:\n+                        data_text = text[data_start + 5 : data_end].strip()\n+                    data = {\"raw\": data_text}\n+                raw = raw_prefix + text[event_start:event_end] + \"\\n\" + text[data_start:data_end]\n+                return SSEEvent(current_event, data, raw)\n+    return _FAST_PARSE_FALLBACK\n+"
+    },
+    {
+      "seq": 13,
+      "kind": "edit",
+      "path": "src/free_claude_code/core/anthropic/streaming/decoder.py",
+      "start_line": 3,
+      "end_line": 4,
+      "lines_before": 2,
+      "lines_after": 8,
+      "at": 1791936835087,
+      "diff": "--- a/src/free_claude_code/core/anthropic/streaming/decoder.py\n+++ b/src/free_claude_code/core/anthropic/streaming/decoder.py\n@@ -3,2 +3,8 @@\n-from ..stream_contracts import SSEEvent, parse_sse_text\n-\n+from ..stream_contracts import (\n+    _FAST_PARSE_FALLBACK,\n+    _FAST_PARSE_FILTERED,\n+    SSEEvent,\n+    _parse_sse_text_event,\n+    parse_sse_text,\n+)\n+"
+    },
+    {
+      "seq": 14,
+      "kind": "edit",
+      "path": "src/free_claude_code/core/anthropic/streaming/decoder.py",
+      "start_line": 26,
+      "end_line": 31,
+      "lines_before": 6,
+      "lines_after": 10,
+      "at": 1791936837329,
+      "diff": "--- a/src/free_claude_code/core/anthropic/streaming/decoder.py\n+++ b/src/free_claude_code/core/anthropic/streaming/decoder.py\n@@ -26,6 +26,10 @@\n-        events: list[SSEEvent] = []\n-        event_names = self._event_names\n-        for raw in frames:\n-            events.extend(parse_sse_text(raw, event_names=event_names))\n-        return tuple(events)\n-\n+        events: list[SSEEvent] = []\n+        event_names = self._event_names\n+        for raw in frames:\n+            event = _parse_sse_text_event(raw, event_names)\n+            if event is _FAST_PARSE_FALLBACK:\n+                events.extend(parse_sse_text(raw, event_names=event_names))\n+            elif event is not _FAST_PARSE_FILTERED:\n+                events.append(event)\n+        return tuple(events)\n+"
+    },
+    {
+      "seq": 15,
+      "kind": "edit",
+      "path": "src/free_claude_code/core/anthropic/streaming/decoder.py",
+      "start_line": 97,
+      "end_line": 102,
+      "lines_before": 6,
+      "lines_after": 10,
+      "at": 1791936839545,
+      "diff": "--- a/src/free_claude_code/core/anthropic/streaming/decoder.py\n+++ b/src/free_claude_code/core/anthropic/streaming/decoder.py\n@@ -97,6 +97,10 @@\n-        events: list[SSEEvent] = []\n-        event_names = self._event_names\n-        for raw in self.finish_frames():\n-            events.extend(parse_sse_text(raw, event_names=event_names))\n-        return tuple(events)\n-\n+        events: list[SSEEvent] = []\n+        event_names = self._event_names\n+        for raw in self.finish_frames():\n+            event = _parse_sse_text_event(raw, event_names)\n+            if event is _FAST_PARSE_FALLBACK:\n+                events.extend(parse_sse_text(raw, event_names=event_names))\n+            elif event is not _FAST_PARSE_FILTERED:\n+                events.append(event)\n+        return tuple(events)\n+"
+    },
+    {
+      "seq": 16,
+      "kind": "read",
+      "path": "src/free_claude_code/core/anthropic/streaming/decoder.py",
+      "start_line": 1,
+      "end_line": 116,
+      "content_sha256": "6324e38957d84006b905e6ae84443119631795bedb08b1ecc16b2e88b0b1a563",
+      "at": 1791936841822
+    },
+    {
+      "seq": 17,
+      "kind": "read",
+      "path": "src/free_claude_code/core/anthropic/stream_contracts.py",
+      "start_line": 1,
+      "end_line": 160,
+      "content_sha256": "45919bfa185ac04be1354d1bb7574b3630f063b487ec1e38fc115a99835eb351",
+      "at": 1791936841825
+    },
+    {
+      "seq": 18,
+      "kind": "evaluate",
+      "target": "decode_ir",
+      "eval_kind": "perf",
+      "at": 1791936844897,
+      "phases": [
+        {
+          "phase": "prepare",
+          "at": 1791936846680
+        },
+        {
+          "phase": "build",
+          "at": 1791936847622
+        },
+        {
+          "phase": "build",
+          "at": 1791936847622
+        },
+        {
+          "phase": "test",
+          "at": 1791936848347
+        },
+        {
+          "phase": "test",
+          "at": 1791936865922
+        },
+        {
+          "phase": "equivalence",
+          "at": 1791936883244
+        },
+        {
+          "phase": "equivalence",
+          "at": 1791936883246
+        },
+        {
+          "phase": "metrics",
+          "at": 1791936883857
+        },
+        {
+          "phase": "metrics",
+          "at": 1791936894069
+        },
+        {
+          "phase": "metrics",
+          "at": 1791936904451
+        },
+        {
+          "phase": "metrics",
+          "at": 1791936914729
+        }
+      ]
+    },
+    {
+      "seq": 30,
+      "kind": "result",
+      "at": 1791936925755,
+      "output": "outcome: rejected (no_improvement: worst ratio 0.9999 vs required 0.9900)\nguard limits (config version 1): every guarded metric other than the target is within its limit\nguard: ok, 2 files, 39 lines\nbuild: base ok, candidate ok\nequivalence: identical outputs\nmetric aggregate_ir: parent 1535912847, candidate 1536968693, ratio 1.0007\nmetric decode_ir: parent 1520741469, candidate 1520583996, ratio 0.9999",
+      "outcome": "rejected",
+      "steps": [
+        {
+          "step": "build",
+          "side": "base",
+          "exit": 0,
+          "duration_ms": 638,
+          "timed_out": false,
+          "tail": "ok\n"
+        },
+        {
+          "step": "build",
+          "side": "cand",
+          "exit": 0,
+          "duration_ms": 636,
+          "timed_out": false,
+          "tail": "ok\n"
+        },
+        {
+          "step": "test",
+          "side": "base",
+          "exit": 1,
+          "duration_ms": 17446,
+          "timed_out": false,
+          "tail": "    File \"/work/src/tests/core/test_lazy_debug_logging.py\", line 13, in <module>\n      from free_claude_code.api.handlers import token_count\n  ModuleNotFoundError: No module named 'free_claude_code'\n  \nassert 1 == 0\n +  where 1 = CompletedProcess(args=['/deps/venv/bin/python', '-c', \"import asyncio, sys; from tests.core.test_lazy_debug_logging im...   from free_claude_code.api.handlers import token_count\\nModuleNotFoundError: No module named \\'free_claude_code\\'\\n').returncode\nFAILED tests/core/test_protocol_model_ownership.py::test_protocol_facades_are_import_order_independent - AssertionError: Traceback (most recent call last):\n    File \"<string>\", line 1, in <module>\n      import free_claude_code.core.anthropic; import free_claude_code.core.openai_responses\n      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  ModuleNotFoundError: No module named 'free_claude_code'\n  \nassert 1 == 0\n +  where 1 = CompletedProcess(args=['/deps/venv/bin/python', '-c', 'import free_claude_code.core.anthropic; import free_claude_code...ai_responses\\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nModuleNotFoundError: No module named \\'free_claude_code\\'\\n').returncode\n8 failed, 1011 passed, 4 skipped in 14.85s\n"
+        },
+        {
+          "step": "test",
+          "side": "cand",
+          "exit": 1,
+          "duration_ms": 17262,
+          "timed_out": false,
+          "tail": "    File \"/work/src/tests/core/test_lazy_debug_logging.py\", line 13, in <module>\n      from free_claude_code.api.handlers import token_count\n  ModuleNotFoundError: No module named 'free_claude_code'\n  \nassert 1 == 0\n +  where 1 = CompletedProcess(args=['/deps/venv/bin/python', '-c', \"import asyncio, sys; from tests.core.test_lazy_debug_logging im...   from free_claude_code.api.handlers import token_count\\nModuleNotFoundError: No module named \\'free_claude_code\\'\\n').returncode\nFAILED tests/core/test_protocol_model_ownership.py::test_protocol_facades_are_import_order_independent - AssertionError: Traceback (most recent call last):\n    File \"<string>\", line 1, in <module>\n      import free_claude_code.core.anthropic; import free_claude_code.core.openai_responses\n      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  ModuleNotFoundError: No module named 'free_claude_code'\n  \nassert 1 == 0\n +  where 1 = CompletedProcess(args=['/deps/venv/bin/python', '-c', 'import free_claude_code.core.anthropic; import free_claude_code...ai_responses\\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nModuleNotFoundError: No module named \\'free_claude_code\\'\\n').returncode\n8 failed, 1011 passed, 4 skipped in 14.67s\n"
+        },
+        {
+          "step": "equivalence",
+          "side": "cand",
+          "exit": 0,
+          "duration_ms": 601,
+          "timed_out": false,
+          "tail": "tokens\": 0, \"output_tokens\": 0}}, null, false]\nagg-edge 2 err ExecutionFailure 'Provider tool arguments cannot be represented as a Messages input object.' 502\nagg-edge 3 ok [{\"content\": [{\"citations\": [{\"u\": 1}], \"text\": \"hi\", \"type\": \"text\"}], \"id\": \"msg_<uuid>\", \"model\": \"unknown\", \"role\": \"assistant\", \"stop_reason\": \"end_turn\", \"stop_sequence\": \"S\", \"type\": \"message\", \"usage\": {\"d\": {}, \"input_tokens\": 0, \"output_tokens\": 4}}, null, false]\nagg-edge 4 ok [{\"content\": [], \"id\": \"msg_<uuid>\", \"model\": \"unknown\", \"role\": \"assistant\", \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"type\": \"message\", \"usage\": {\"input_tokens\": 0, \"output_tokens\": 0}}, {\"message\": \"provider error\", \"type\": \"api_error\"}, true]\nagg-edge 5 ok [{\"content\": [{\"input\": {}, \"type\": \"tool_use\"}], \"id\": \"m\", \"model\": \"unknown\", \"role\": \"assistant\", \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"type\": \"message\", \"usage\": {\"input_tokens\": 3, \"output_tokens\": 0}}, {\"type\": \"x\"}, false]\nagg-edge 6 ok [{\"content\": [], \"id\": \"msg_<uuid>\", \"model\": \"unknown\", \"role\": \"assistant\", \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"type\": \"message\", \"usage\": {\"input_tokens\": 0, \"output_tokens\": 0}}, null, false]\n"
+        },
+        {
+          "step": "equivalence",
+          "side": "base",
+          "exit": 0,
+          "duration_ms": 615,
+          "timed_out": false,
+          "tail": "tokens\": 0, \"output_tokens\": 0}}, null, false]\nagg-edge 2 err ExecutionFailure 'Provider tool arguments cannot be represented as a Messages input object.' 502\nagg-edge 3 ok [{\"content\": [{\"citations\": [{\"u\": 1}], \"text\": \"hi\", \"type\": \"text\"}], \"id\": \"msg_<uuid>\", \"model\": \"unknown\", \"role\": \"assistant\", \"stop_reason\": \"end_turn\", \"stop_sequence\": \"S\", \"type\": \"message\", \"usage\": {\"d\": {}, \"input_tokens\": 0, \"output_tokens\": 4}}, null, false]\nagg-edge 4 ok [{\"content\": [], \"id\": \"msg_<uuid>\", \"model\": \"unknown\", \"role\": \"assistant\", \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"type\": \"message\", \"usage\": {\"input_tokens\": 0, \"output_tokens\": 0}}, {\"message\": \"provider error\", \"type\": \"api_error\"}, true]\nagg-edge 5 ok [{\"content\": [{\"input\": {}, \"type\": \"tool_use\"}], \"id\": \"m\", \"model\": \"unknown\", \"role\": \"assistant\", \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"type\": \"message\", \"usage\": {\"input_tokens\": 3, \"output_tokens\": 0}}, {\"type\": \"x\"}, false]\nagg-edge 6 ok [{\"content\": [], \"id\": \"msg_<uuid>\", \"model\": \"unknown\", \"role\": \"assistant\", \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"type\": \"message\", \"usage\": {\"input_tokens\": 0, \"output_tokens\": 0}}, null, false]\n"
+        },
+        {
+          "step": "metrics",
+          "side": "base",
+          "exit": 0,
+          "duration_ms": 10211,
+          "timed_out": false,
+          "tail": "==7== Cachegrind, a cache and branch-prediction profiler\n==7== Copyright (C) 2002-2017, and GNU GPL'd, by Nicholas Nethercote et al.\n==7== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info\n==7== Command: /deps/venv/bin/python lineage_bench.py aggregate 6e758cb1e1ff379f\n==7== \n==7== brk segment overflow in thread #1: can't grow to 0x4835000\n==7== (see section Limitations in user manual)\n==7== NOTE: further instances of this message will not be shown\n==7== \n==7== I   refs:      1,535,912,847\n"
+        },
+        {
+          "step": "metrics",
+          "side": "cand",
+          "exit": 0,
+          "duration_ms": 10380,
+          "timed_out": false,
+          "tail": "==7== Cachegrind, a cache and branch-prediction profiler\n==7== Copyright (C) 2002-2017, and GNU GPL'd, by Nicholas Nethercote et al.\n==7== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info\n==7== Command: /deps/venv/bin/python lineage_bench.py aggregate 6e758cb1e1ff379f\n==7== \n==7== brk segment overflow in thread #1: can't grow to 0x4840000\n==7== (see section Limitations in user manual)\n==7== NOTE: further instances of this message will not be shown\n==7== \n==7== I   refs:      1,536,968,693\n"
+        },
+        {
+          "step": "metrics",
+          "side": "base",
+          "exit": 0,
+          "duration_ms": 10279,
+          "timed_out": false,
+          "tail": "==8== Cachegrind, a cache and branch-prediction profiler\n==8== Copyright (C) 2002-2017, and GNU GPL'd, by Nicholas Nethercote et al.\n==8== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info\n==8== Command: /deps/venv/bin/python lineage_bench.py decode 6e758cb1e1ff379f\n==8== \n==8== brk segment overflow in thread #1: can't grow to 0x483b000\n==8== (see section Limitations in user manual)\n==8== NOTE: further instances of this message will not be shown\n==8== \n==8== I   refs:      1,520,741,469\n"
+        },
+        {
+          "step": "metrics",
+          "side": "cand",
+          "exit": 0,
+          "duration_ms": 10470,
+          "timed_out": false,
+          "tail": "==7== Cachegrind, a cache and branch-prediction profiler\n==7== Copyright (C) 2002-2017, and GNU GPL'd, by Nicholas Nethercote et al.\n==7== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info\n==7== Command: /deps/venv/bin/python lineage_bench.py decode 6e758cb1e1ff379f\n==7== \n==7== brk segment overflow in thread #1: can't grow to 0x484a000\n==7== (see section Limitations in user manual)\n==7== NOTE: further instances of this message will not be shown\n==7== \n==7== I   refs:      1,520,583,996\n"
+        }
+      ]
+    },
+    {
+      "seq": 31,
+      "kind": "edit",
+      "path": "src/free_claude_code/core/anthropic/stream_contracts.py",
+      "start_line": 144,
+      "end_line": 146,
+      "lines_before": 3,
+      "lines_after": 6,
+      "at": 1791936941302,
+      "diff": "--- a/src/free_claude_code/core/anthropic/stream_contracts.py\n+++ b/src/free_claude_code/core/anthropic/stream_contracts.py\n@@ -144,3 +144,6 @@\n-                raw = raw_prefix + text[event_start:event_end] + \"\\n\" + text[data_start:data_end]\n-                return SSEEvent(current_event, data, raw)\n-\n+                if event_lf == event_end and data_lf == data_end and not raw_prefix:\n+                    raw = text[:data_end]\n+                else:\n+                    raw = raw_prefix + text[event_start:event_end] + \"\\n\" + text[data_start:data_end]\n+                return SSEEvent(current_event, data, raw)\n+"
+    },
+    {
+      "seq": 32,
+      "kind": "evaluate",
+      "target": "decode_ir",
+      "eval_kind": "perf",
+      "at": 1791936943183,
+      "phases": [
+        {
+          "phase": "prepare",
+          "at": 1791936944527
+        },
+        {
+          "phase": "build",
+          "at": 1791936945492
+        },
+        {
+          "phase": "build",
+          "at": 1791936945492
+        },
+        {
+          "phase": "test",
+          "at": 1791936946204
+        },
+        {
+          "phase": "test",
+          "at": 1791936963981
+        },
+        {
+          "phase": "equivalence",
+          "at": 1791936981756
+        },
+        {
+          "phase": "equivalence",
+          "at": 1791936981756
+        },
+        {
+          "phase": "metrics",
+          "at": 1791936982368
+        },
+        {
+          "phase": "metrics",
+          "at": 1791936992672
+        },
+        {
+          "phase": "metrics",
+          "at": 1791937003046
+        },
+        {
+          "phase": "metrics",
+          "at": 1791937013798
+        }
+      ]
+    },
+    {
+      "seq": 44,
+      "kind": "result",
+      "at": 1791937024437,
+      "output": "outcome: rejected (no_improvement: worst ratio 0.9992 vs required 0.9900)\nguard limits (config version 1): every guarded metric other than the target is within its limit\nguard: ok, 2 files, 44 lines\nbuild: base ok, candidate ok\nequivalence: identical outputs\nmetric aggregate_ir: parent 1535903001, candidate 1537097621, ratio 1.0008\nmetric decode_ir: parent 1520732085, candidate 1519470023, ratio 0.9992",
+      "outcome": "rejected",
+      "steps": [
+        {
+          "step": "build",
+          "side": "cand",
+          "exit": 0,
+          "duration_ms": 615,
+          "timed_out": false,
+          "tail": "ok\n"
+        },
+        {
+          "step": "build",
+          "side": "base",
+          "exit": 0,
+          "duration_ms": 618,
+          "timed_out": false,
+          "tail": "ok\n"
+        },
+        {
+          "step": "test",
+          "side": "base",
+          "exit": 1,
+          "duration_ms": 17650,
+          "timed_out": false,
+          "tail": "    File \"/work/src/tests/core/test_lazy_debug_logging.py\", line 13, in <module>\n      from free_claude_code.api.handlers import token_count\n  ModuleNotFoundError: No module named 'free_claude_code'\n  \nassert 1 == 0\n +  where 1 = CompletedProcess(args=['/deps/venv/bin/python', '-c', \"import asyncio, sys; from tests.core.test_lazy_debug_logging im...   from free_claude_code.api.handlers import token_count\\nModuleNotFoundError: No module named \\'free_claude_code\\'\\n').returncode\nFAILED tests/core/test_protocol_model_ownership.py::test_protocol_facades_are_import_order_independent - AssertionError: Traceback (most recent call last):\n    File \"<string>\", line 1, in <module>\n      import free_claude_code.core.anthropic; import free_claude_code.core.openai_responses\n      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  ModuleNotFoundError: No module named 'free_claude_code'\n  \nassert 1 == 0\n +  where 1 = CompletedProcess(args=['/deps/venv/bin/python', '-c', 'import free_claude_code.core.anthropic; import free_claude_code...ai_responses\\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nModuleNotFoundError: No module named \\'free_claude_code\\'\\n').returncode\n8 failed, 1011 passed, 4 skipped in 15.11s\n"
+        },
+        {
+          "step": "test",
+          "side": "cand",
+          "exit": 1,
+          "duration_ms": 17728,
+          "timed_out": false,
+          "tail": "    File \"/work/src/tests/core/test_lazy_debug_logging.py\", line 13, in <module>\n      from free_claude_code.api.handlers import token_count\n  ModuleNotFoundError: No module named 'free_claude_code'\n  \nassert 1 == 0\n +  where 1 = CompletedProcess(args=['/deps/venv/bin/python', '-c', \"import asyncio, sys; from tests.core.test_lazy_debug_logging im...   from free_claude_code.api.handlers import token_count\\nModuleNotFoundError: No module named \\'free_claude_code\\'\\n').returncode\nFAILED tests/core/test_protocol_model_ownership.py::test_protocol_facades_are_import_order_independent - AssertionError: Traceback (most recent call last):\n    File \"<string>\", line 1, in <module>\n      import free_claude_code.core.anthropic; import free_claude_code.core.openai_responses\n      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  ModuleNotFoundError: No module named 'free_claude_code'\n  \nassert 1 == 0\n +  where 1 = CompletedProcess(args=['/deps/venv/bin/python', '-c', 'import free_claude_code.core.anthropic; import free_claude_code...ai_responses\\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nModuleNotFoundError: No module named \\'free_claude_code\\'\\n').returncode\n8 failed, 1011 passed, 4 skipped in 15.15s\n"
+        },
+        {
+          "step": "equivalence",
+          "side": "cand",
+          "exit": 0,
+          "duration_ms": 607,
+          "timed_out": false,
+          "tail": "tokens\": 0, \"output_tokens\": 0}}, null, false]\nagg-edge 2 err ExecutionFailure 'Provider tool arguments cannot be represented as a Messages input object.' 502\nagg-edge 3 ok [{\"content\": [{\"citations\": [{\"u\": 1}], \"text\": \"hi\", \"type\": \"text\"}], \"id\": \"msg_<uuid>\", \"model\": \"unknown\", \"role\": \"assistant\", \"stop_reason\": \"end_turn\", \"stop_sequence\": \"S\", \"type\": \"message\", \"usage\": {\"d\": {}, \"input_tokens\": 0, \"output_tokens\": 4}}, null, false]\nagg-edge 4 ok [{\"content\": [], \"id\": \"msg_<uuid>\", \"model\": \"unknown\", \"role\": \"assistant\", \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"type\": \"message\", \"usage\": {\"input_tokens\": 0, \"output_tokens\": 0}}, {\"message\": \"provider error\", \"type\": \"api_error\"}, true]\nagg-edge 5 ok [{\"content\": [{\"input\": {}, \"type\": \"tool_use\"}], \"id\": \"m\", \"model\": \"unknown\", \"role\": \"assistant\", \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"type\": \"message\", \"usage\": {\"input_tokens\": 3, \"output_tokens\": 0}}, {\"type\": \"x\"}, false]\nagg-edge 6 ok [{\"content\": [], \"id\": \"msg_<uuid>\", \"model\": \"unknown\", \"role\": \"assistant\", \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"type\": \"message\", \"usage\": {\"input_tokens\": 0, \"output_tokens\": 0}}, null, false]\n"
+        },
+        {
+          "step": "equivalence",
+          "side": "base",
+          "exit": 0,
+          "duration_ms": 611,
+          "timed_out": false,
+          "tail": "tokens\": 0, \"output_tokens\": 0}}, null, false]\nagg-edge 2 err ExecutionFailure 'Provider tool arguments cannot be represented as a Messages input object.' 502\nagg-edge 3 ok [{\"content\": [{\"citations\": [{\"u\": 1}], \"text\": \"hi\", \"type\": \"text\"}], \"id\": \"msg_<uuid>\", \"model\": \"unknown\", \"role\": \"assistant\", \"stop_reason\": \"end_turn\", \"stop_sequence\": \"S\", \"type\": \"message\", \"usage\": {\"d\": {}, \"input_tokens\": 0, \"output_tokens\": 4}}, null, false]\nagg-edge 4 ok [{\"content\": [], \"id\": \"msg_<uuid>\", \"model\": \"unknown\", \"role\": \"assistant\", \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"type\": \"message\", \"usage\": {\"input_tokens\": 0, \"output_tokens\": 0}}, {\"message\": \"provider error\", \"type\": \"api_error\"}, true]\nagg-edge 5 ok [{\"content\": [{\"input\": {}, \"type\": \"tool_use\"}], \"id\": \"m\", \"model\": \"unknown\", \"role\": \"assistant\", \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"type\": \"message\", \"usage\": {\"input_tokens\": 3, \"output_tokens\": 0}}, {\"type\": \"x\"}, false]\nagg-edge 6 ok [{\"content\": [], \"id\": \"msg_<uuid>\", \"model\": \"unknown\", \"role\": \"assistant\", \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"type\": \"message\", \"usage\": {\"input_tokens\": 0, \"output_tokens\": 0}}, null, false]\n"
+        },
+        {
+          "step": "metrics",
+          "side": "base",
+          "exit": 0,
+          "duration_ms": 10303,
+          "timed_out": false,
+          "tail": "==7== Cachegrind, a cache and branch-prediction profiler\n==7== Copyright (C) 2002-2017, and GNU GPL'd, by Nicholas Nethercote et al.\n==7== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info\n==7== Command: /deps/venv/bin/python lineage_bench.py aggregate 6e758cb1e1ff379f\n==7== \n==7== brk segment overflow in thread #1: can't grow to 0x4835000\n==7== (see section Limitations in user manual)\n==7== NOTE: further instances of this message will not be shown\n==7== \n==7== I   refs:      1,535,903,001\n"
+        },
+        {
+          "step": "metrics",
+          "side": "cand",
+          "exit": 0,
+          "duration_ms": 10373,
+          "timed_out": false,
+          "tail": "==7== Cachegrind, a cache and branch-prediction profiler\n==7== Copyright (C) 2002-2017, and GNU GPL'd, by Nicholas Nethercote et al.\n==7== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info\n==7== Command: /deps/venv/bin/python lineage_bench.py aggregate 6e758cb1e1ff379f\n==7== \n==7== brk segment overflow in thread #1: can't grow to 0x483c000\n==7== (see section Limitations in user manual)\n==7== NOTE: further instances of this message will not be shown\n==7== \n==7== I   refs:      1,537,097,621\n"
+        },
+        {
+          "step": "metrics",
+          "side": "base",
+          "exit": 0,
+          "duration_ms": 10688,
+          "timed_out": false,
+          "tail": "==7== Cachegrind, a cache and branch-prediction profiler\n==7== Copyright (C) 2002-2017, and GNU GPL'd, by Nicholas Nethercote et al.\n==7== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info\n==7== Command: /deps/venv/bin/python lineage_bench.py decode 6e758cb1e1ff379f\n==7== \n==7== brk segment overflow in thread #1: can't grow to 0x483b000\n==7== (see section Limitations in user manual)\n==7== NOTE: further instances of this message will not be shown\n==7== \n==7== I   refs:      1,520,732,085\n"
+        },
+        {
+          "step": "metrics",
+          "side": "cand",
+          "exit": 0,
+          "duration_ms": 10266,
+          "timed_out": false,
+          "tail": "==7== Cachegrind, a cache and branch-prediction profiler\n==7== Copyright (C) 2002-2017, and GNU GPL'd, by Nicholas Nethercote et al.\n==7== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info\n==7== Command: /deps/venv/bin/python lineage_bench.py decode 6e758cb1e1ff379f\n==7== \n==7== brk segment overflow in thread #1: can't grow to 0x484d000\n==7== (see section Limitations in user manual)\n==7== NOTE: further instances of this message will not be shown\n==7== \n==7== I   refs:      1,519,470,023\n"
+        }
+      ]
+    },
+    {
+      "seq": 45,
+      "kind": "edit",
+      "path": "src/free_claude_code/core/anthropic/streaming/decoder.py",
+      "start_line": 23,
+      "end_line": 24,
+      "lines_before": 2,
+      "lines_after": 2,
+      "at": 1791937033120,
+      "diff": "--- a/src/free_claude_code/core/anthropic/streaming/decoder.py\n+++ b/src/free_claude_code/core/anthropic/streaming/decoder.py\n@@ -23,2 +23,2 @@\n-        frames = self.feed_frames(chunk)\n-\n+        frames = self._feed_frames(chunk)\n+"
+    },
+    {
+      "seq": 46,
+      "kind": "edit",
+      "path": "src/free_claude_code/core/anthropic/streaming/decoder.py",
+      "start_line": 36,
+      "end_line": 40,
+      "lines_before": 5,
+      "lines_after": 8,
+      "at": 1791937035263,
+      "diff": "--- a/src/free_claude_code/core/anthropic/streaming/decoder.py\n+++ b/src/free_claude_code/core/anthropic/streaming/decoder.py\n@@ -36,5 +36,8 @@\n-    def feed_frames(self, chunk: str) -> tuple[str, ...]:\n-        \"\"\"Retain original framing, including comments and unknown SSE fields.\"\"\"\n-\n-        if chunk and \"\\n\" not in chunk and \"\\r\" not in chunk:\n-\n+    def feed_frames(self, chunk: str) -> tuple[str, ...]:\n+        \"\"\"Retain original framing, including comments and unknown SSE fields.\"\"\"\n+\n+        return tuple(self._feed_frames(chunk))\n+\n+    def _feed_frames(self, chunk: str) -> list[str] | tuple[()]:\n+        if chunk and \"\\n\" not in chunk and \"\\r\" not in chunk:\n+"
+    },
+    {
+      "seq": 47,
+      "kind": "edit",
+      "path": "src/free_claude_code/core/anthropic/streaming/decoder.py",
+      "start_line": 41,
+      "end_line": 42,
+      "lines_before": 2,
+      "lines_after": 2,
+      "at": 1791937039343,
+      "diff": "--- a/src/free_claude_code/core/anthropic/streaming/decoder.py\n+++ b/src/free_claude_code/core/anthropic/streaming/decoder.py\n@@ -41,2 +41,2 @@\n-    def _feed_frames(self, chunk: str) -> list[str] | tuple[()]:\n-\n+    def _feed_frames(self, chunk: str) -> list[str] | tuple[str, ...]:\n+"
+    },
+    {
+      "seq": 48,
+      "kind": "edit",
+      "path": "src/free_claude_code/core/anthropic/streaming/decoder.py",
+      "start_line": 95,
+      "end_line": 96,
+      "lines_before": 2,
+      "lines_after": 2,
+      "at": 1791937041641,
+      "diff": "--- a/src/free_claude_code/core/anthropic/streaming/decoder.py\n+++ b/src/free_claude_code/core/anthropic/streaming/decoder.py\n@@ -95,2 +95,2 @@\n-        return tuple(frames)\n-\n+        return frames\n+"
+    },
+    {
+      "seq": 49,
+      "kind": "read",
+      "path": "src/free_claude_code/core/anthropic/streaming/decoder.py",
+      "start_line": 20,
+      "end_line": 110,
+      "content_sha256": "056ae78ee135fc046ad56641b2fc9a1c9e4ef52a431f8ab414d82870b9c5d000",
+      "at": 1791937043248
+    },
+    {
+      "seq": 50,
+      "kind": "evaluate",
+      "target": "decode_ir",
+      "eval_kind": "perf",
+      "at": 1791937045489,
+      "phases": [
+        {
+          "phase": "prepare",
+          "at": 1791937047306
+        },
+        {
+          "phase": "build",
+          "at": 1791937048274
+        },
+        {
+          "phase": "build",
+          "at": 1791937048275
+        },
+        {
+          "phase": "test",
+          "at": 1791937049024
+        },
+        {
+          "phase": "test",
+          "at": 1791937066603
+        },
+        {
+          "phase": "equivalence",
+          "at": 1791937084152
+        },
+        {
+          "phase": "equivalence",
+          "at": 1791937084153
+        },
+        {
+          "phase": "metrics",
+          "at": 1791937084771
+        },
+        {
+          "phase": "metrics",
+          "at": 1791937095096
+        },
+        {
+          "phase": "metrics",
+          "at": 1791937105326
+        },
+        {
+          "phase": "metrics",
+          "at": 1791937115377
+        }
+      ]
+    },
+    {
+      "seq": 62,
+      "kind": "result",
+      "at": 1791937125830,
+      "output": "outcome: rejected (no_improvement: worst ratio 0.9991 vs required 0.9900)\nguard limits (config version 1): every guarded metric other than the target is within its limit\nguard: ok, 2 files, 51 lines\nbuild: base ok, candidate ok\nequivalence: identical outputs\nmetric aggregate_ir: parent 1535882110, candidate 1538119892, ratio 1.0015\nmetric decode_ir: parent 1520759045, candidate 1519411269, ratio 0.9991",
+      "outcome": "rejected",
+      "steps": [
+        {
+          "step": "build",
+          "side": "base",
+          "exit": 0,
+          "duration_ms": 660,
+          "timed_out": false,
+          "tail": "ok\n"
+        },
+        {
+          "step": "build",
+          "side": "cand",
+          "exit": 0,
+          "duration_ms": 660,
+          "timed_out": false,
+          "tail": "ok\n"
+        },
+        {
+          "step": "test",
+          "side": "base",
+          "exit": 1,
+          "duration_ms": 17449,
+          "timed_out": false,
+          "tail": "    File \"/work/src/tests/core/test_lazy_debug_logging.py\", line 13, in <module>\n      from free_claude_code.api.handlers import token_count\n  ModuleNotFoundError: No module named 'free_claude_code'\n  \nassert 1 == 0\n +  where 1 = CompletedProcess(args=['/deps/venv/bin/python', '-c', \"import asyncio, sys; from tests.core.test_lazy_debug_logging im...   from free_claude_code.api.handlers import token_count\\nModuleNotFoundError: No module named \\'free_claude_code\\'\\n').returncode\nFAILED tests/core/test_protocol_model_ownership.py::test_protocol_facades_are_import_order_independent - AssertionError: Traceback (most recent call last):\n    File \"<string>\", line 1, in <module>\n      import free_claude_code.core.anthropic; import free_claude_code.core.openai_responses\n      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  ModuleNotFoundError: No module named 'free_claude_code'\n  \nassert 1 == 0\n +  where 1 = CompletedProcess(args=['/deps/venv/bin/python', '-c', 'import free_claude_code.core.anthropic; import free_claude_code...ai_responses\\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nModuleNotFoundError: No module named \\'free_claude_code\\'\\n').returncode\n8 failed, 1011 passed, 4 skipped in 14.87s\n"
+        },
+        {
+          "step": "test",
+          "side": "cand",
+          "exit": 1,
+          "duration_ms": 17503,
+          "timed_out": false,
+          "tail": "    File \"/work/src/tests/core/test_lazy_debug_logging.py\", line 13, in <module>\n      from free_claude_code.api.handlers import token_count\n  ModuleNotFoundError: No module named 'free_claude_code'\n  \nassert 1 == 0\n +  where 1 = CompletedProcess(args=['/deps/venv/bin/python', '-c', \"import asyncio, sys; from tests.core.test_lazy_debug_logging im...   from free_claude_code.api.handlers import token_count\\nModuleNotFoundError: No module named \\'free_claude_code\\'\\n').returncode\nFAILED tests/core/test_protocol_model_ownership.py::test_protocol_facades_are_import_order_independent - AssertionError: Traceback (most recent call last):\n    File \"<string>\", line 1, in <module>\n      import free_claude_code.core.anthropic; import free_claude_code.core.openai_responses\n      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  ModuleNotFoundError: No module named 'free_claude_code'\n  \nassert 1 == 0\n +  where 1 = CompletedProcess(args=['/deps/venv/bin/python', '-c', 'import free_claude_code.core.anthropic; import free_claude_code...ai_responses\\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nModuleNotFoundError: No module named \\'free_claude_code\\'\\n').returncode\n8 failed, 1011 passed, 4 skipped in 14.93s\n"
+        },
+        {
+          "step": "equivalence",
+          "side": "base",
+          "exit": 0,
+          "duration_ms": 612,
+          "timed_out": false,
+          "tail": "tokens\": 0, \"output_tokens\": 0}}, null, false]\nagg-edge 2 err ExecutionFailure 'Provider tool arguments cannot be represented as a Messages input object.' 502\nagg-edge 3 ok [{\"content\": [{\"citations\": [{\"u\": 1}], \"text\": \"hi\", \"type\": \"text\"}], \"id\": \"msg_<uuid>\", \"model\": \"unknown\", \"role\": \"assistant\", \"stop_reason\": \"end_turn\", \"stop_sequence\": \"S\", \"type\": \"message\", \"usage\": {\"d\": {}, \"input_tokens\": 0, \"output_tokens\": 4}}, null, false]\nagg-edge 4 ok [{\"content\": [], \"id\": \"msg_<uuid>\", \"model\": \"unknown\", \"role\": \"assistant\", \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"type\": \"message\", \"usage\": {\"input_tokens\": 0, \"output_tokens\": 0}}, {\"message\": \"provider error\", \"type\": \"api_error\"}, true]\nagg-edge 5 ok [{\"content\": [{\"input\": {}, \"type\": \"tool_use\"}], \"id\": \"m\", \"model\": \"unknown\", \"role\": \"assistant\", \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"type\": \"message\", \"usage\": {\"input_tokens\": 3, \"output_tokens\": 0}}, {\"type\": \"x\"}, false]\nagg-edge 6 ok [{\"content\": [], \"id\": \"msg_<uuid>\", \"model\": \"unknown\", \"role\": \"assistant\", \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"type\": \"message\", \"usage\": {\"input_tokens\": 0, \"output_tokens\": 0}}, null, false]\n"
+        },
+        {
+          "step": "equivalence",
+          "side": "cand",
+          "exit": 0,
+          "duration_ms": 617,
+          "timed_out": false,
+          "tail": "tokens\": 0, \"output_tokens\": 0}}, null, false]\nagg-edge 2 err ExecutionFailure 'Provider tool arguments cannot be represented as a Messages input object.' 502\nagg-edge 3 ok [{\"content\": [{\"citations\": [{\"u\": 1}], \"text\": \"hi\", \"type\": \"text\"}], \"id\": \"msg_<uuid>\", \"model\": \"unknown\", \"role\": \"assistant\", \"stop_reason\": \"end_turn\", \"stop_sequence\": \"S\", \"type\": \"message\", \"usage\": {\"d\": {}, \"input_tokens\": 0, \"output_tokens\": 4}}, null, false]\nagg-edge 4 ok [{\"content\": [], \"id\": \"msg_<uuid>\", \"model\": \"unknown\", \"role\": \"assistant\", \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"type\": \"message\", \"usage\": {\"input_tokens\": 0, \"output_tokens\": 0}}, {\"message\": \"provider error\", \"type\": \"api_error\"}, true]\nagg-edge 5 ok [{\"content\": [{\"input\": {}, \"type\": \"tool_use\"}], \"id\": \"m\", \"model\": \"unknown\", \"role\": \"assistant\", \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"type\": \"message\", \"usage\": {\"input_tokens\": 3, \"output_tokens\": 0}}, {\"type\": \"x\"}, false]\nagg-edge 6 ok [{\"content\": [], \"id\": \"msg_<uuid>\", \"model\": \"unknown\", \"role\": \"assistant\", \"stop_reason\": \"end_turn\", \"stop_sequence\": null, \"type\": \"message\", \"usage\": {\"input_tokens\": 0, \"output_tokens\": 0}}, null, false]\n"
+        },
+        {
+          "step": "metrics",
+          "side": "base",
+          "exit": 0,
+          "duration_ms": 10324,
+          "timed_out": false,
+          "tail": "==7== Cachegrind, a cache and branch-prediction profiler\n==7== Copyright (C) 2002-2017, and GNU GPL'd, by Nicholas Nethercote et al.\n==7== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info\n==7== Command: /deps/venv/bin/python lineage_bench.py aggregate 6e758cb1e1ff379f\n==7== \n==7== brk segment overflow in thread #1: can't grow to 0x4835000\n==7== (see section Limitations in user manual)\n==7== NOTE: further instances of this message will not be shown\n==7== \n==7== I   refs:      1,535,882,110\n"
+        },
+        {
+          "step": "metrics",
+          "side": "cand",
+          "exit": 0,
+          "duration_ms": 10229,
+          "timed_out": false,
+          "tail": "==6== Cachegrind, a cache and branch-prediction profiler\n==6== Copyright (C) 2002-2017, and GNU GPL'd, by Nicholas Nethercote et al.\n==6== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info\n==6== Command: /deps/venv/bin/python lineage_bench.py aggregate 6e758cb1e1ff379f\n==6== \n==6== brk segment overflow in thread #1: can't grow to 0x4851000\n==6== (see section Limitations in user manual)\n==6== NOTE: further instances of this message will not be shown\n==6== \n==6== I   refs:      1,538,119,892\n"
+        },
+        {
+          "step": "metrics",
+          "side": "base",
+          "exit": 0,
+          "duration_ms": 10050,
+          "timed_out": false,
+          "tail": "==7== Cachegrind, a cache and branch-prediction profiler\n==7== Copyright (C) 2002-2017, and GNU GPL'd, by Nicholas Nethercote et al.\n==7== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info\n==7== Command: /deps/venv/bin/python lineage_bench.py decode 6e758cb1e1ff379f\n==7== \n==7== brk segment overflow in thread #1: can't grow to 0x483b000\n==7== (see section Limitations in user manual)\n==7== NOTE: further instances of this message will not be shown\n==7== \n==7== I   refs:      1,520,759,045\n"
+        },
+        {
+          "step": "metrics",
+          "side": "cand",
+          "exit": 0,
+          "duration_ms": 10000,
+          "timed_out": false,
+          "tail": "==7== Cachegrind, a cache and branch-prediction profiler\n==7== Copyright (C) 2002-2017, and GNU GPL'd, by Nicholas Nethercote et al.\n==7== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info\n==7== Command: /deps/venv/bin/python lineage_bench.py decode 6e758cb1e1ff379f\n==7== \n==7== brk segment overflow in thread #1: can't grow to 0x484e000\n==7== (see section Limitations in user manual)\n==7== NOTE: further instances of this message will not be shown\n==7== \n==7== I   refs:      1,519,411,269\n"
+        }
+      ]
+    },
+    {
+      "seq": 63,
+      "kind": "edit",
+      "path": "src/free_claude_code/core/anthropic/streaming/decoder.py",
+      "start_line": 28,
+      "end_line": 30,
+      "lines_before": 3,
+      "lines_after": 5,
+      "at": 1791937158932,
+      "diff": "--- a/src/free_claude_code/core/anthropic/streaming/decoder.py\n+++ b/src/free_claude_code/core/anthropic/streaming/decoder.py\n@@ -28,3 +28,5 @@\n-        for raw in frames:\n-            event = _parse_sse_text_event(raw, event_names)\n-\n+        for raw in frames:\n+            if event_names is not None and _skip_named_event(raw, event_names):\n+                continue\n+            event = _parse_sse_text_event(raw, event_names)\n+"
+    },
+    {
+      "seq": 64,
+      "kind": "edit",
+      "path": "src/free_claude_code/core/anthropic/streaming/decoder.py",
+      "start_line": 3,
+      "end_line": 13,
+      "lines_before": 11,
+      "lines_after": 31,
+      "at": 1791937162644,
+      "diff": "--- a/src/free_claude_code/core/anthropic/streaming/decoder.py\n+++ b/src/free_claude_code/core/anthropic/streaming/decoder.py\n@@ -3,11 +3,31 @@\n-from ..stream_contracts import (\n-    _FAST_PARSE_FALLBACK,\n-    _FAST_PARSE_FILTERED,\n-    SSEEvent,\n-    _parse_sse_text_event,\n-    parse_sse_text,\n-)\n-\n-\n-class AnthropicSSEDecoder:\n-\n+from ..stream_contracts import (\n+    _FAST_PARSE_FALLBACK,\n+    _FAST_PARSE_FILTERED,\n+    SSEEvent,\n+    _parse_sse_text_event,\n+    parse_sse_text,\n+)\n+\n+\n+def _skip_named_event(text: str, event_names: frozenset[str]) -> bool:\n+    event_start = 0\n+    if text.startswith(\":\"):\n+        comment_lf = text.find(\"\\n\")\n+        if comment_lf == -1:\n+            return False\n+        event_start = comment_lf + 1\n+    if not text.startswith(\"event:\", event_start):\n+        return False\n+    event_lf = text.find(\"\\n\", event_start)\n+    if event_lf == -1:\n+        return False\n+    event_end = event_lf - 1 if text[event_lf - 1] == \"\\r\" else event_lf\n+    if text[event_start + 6] == \" \":\n+        current_event = text[event_start + 7 : event_end]\n+    else:\n+        current_event = text[event_start + 6 : event_end].strip()\n+    return bool(current_event and current_event not in event_names)\n+\n+\n+class AnthropicSSEDecoder:\n+"
+    }
+  ],
+  "candidate": null,
+  "replays": [],
+  "verdict": null,
+  "outcome": "no_candidate",
+  "effect": null,
+  "cost": {
+    "input_tokens": 70021,
+    "output_tokens": 9695,
+    "cache_read_tokens": 380928,
+    "cache_write_tokens": 0,
+    "usd": 0.877147,
+    "sandbox_s": 236.101,
+    "source": "worker_report"
+  },
+  "reward": {
+    "v": 1,
+    "accepted": 0,
+    "effect": 0,
+    "fixed_tests": 0,
+    "effect_per_usd": 0,
+    "effect_per_sandbox_hour": 0,
+    "reverted": false,
+    "inputs": [
+      "outcome",
+      "cost.usd (worker_report)",
+      "cost.sandbox_s (worker_report)"
+    ]
+  },
+  "worker_outcome": "no candidate: the session stopped without submitting a change [stop: cap reached; model calls: 20]",
+  "journal": {
+    "entry_id": "0bb11f659bcc671628b151ac9604f08a454c898db02d039354402b8e214451ee",
+    "text": "I tried to reduce decode_ir in src/free_claude_code/core/anthropic/streaming/decoder.py and src/free_claude_code/core/anthropic/stream_contracts.py. I worked from parse_sse_text, AnthropicSSEDecoder, feed_frames, and SSEEvent. The largest edits replaced stream_contracts.py lines 81-136 with 67 lines and decoder.py lines 3-13 with 31 lines.\n\nEvaluation 1 was \"outcome: rejected\" with \"no_improvement: worst ratio 0.9999 vs required 0.9900\". Evaluation 3 was \"outcome: rejected\" with \"worst ratio 0.9992\". Evaluation 5 was \"outcome: rejected\" with \"worst ratio 0.9991\". Each run had \"equivalence: identical outputs\". The session ended with no candidate.\n\nThe decode_ir changes did not help enough. aggregate_ir moved to ratio 1.0007, 1.0008, and 1.0015. Guard stayed ok, but the target stayed near parent.\n\nNext try should use lineage_bench.py and lineage_equiv.py on smaller decoder.py changes first. Check parse_sse_text and feed_frames separately.",
+    "created_at": 1791937176748,
+    "sig": "4wxy7z482brLwkxoLVbPhYbeKzqfavnjCaT1Ni3sZ4L2XTtWRsc47KxfRum3phermJCU1Vc6z1u1g8rCtQzF3gip",
+    "signer": "Ft5ejAQTtJiQLa1ZCEzLCF6SY4R1dBKx4WivDC2Rk4T3"
+  },
+  "provenance": null,
+  "license": null,
+  "attribution": "Code excerpts from https://github.com/alishahryar1/free-claude-code at 74d4ccfde724f7416fa2a728d594d704dddc7c94, copyright its authors; the licence was not determined (see the repository).",
+  "times": {
+    "started_at": 1791936794526,
+    "ended_at": 1791937162652,
+    "finalized_at": null,
+    "published_at": 1791937217029
+  },
+  "verify": {
+    "session": "/v1/sessions/6b4a2599e70b8d1304d92a398cae2c418a921cf6a46d6a6ed57544da146bda84",
+    "candidate": null,
+    "generation": null,
+    "provenance": null,
+    "journal": "/v1/agents/9fmKzMczCiqZxbigomZ8A2UcczHiPyvE1MPnXWTnCqEC/journal?lineage=604b02c1526246078c0978552b047195491b9acc50c67042a6df51b76f4a0e41"
+  }
+}

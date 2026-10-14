@@ -1,6 +1,6 @@
 # Lessons: free-claude-code
 
-Lineage `604b02c1526246078c0978552b047195491b9acc50c67042a6df51b76f4a0e41` on [https://github.com/alishahryar1/free-claude-code](https://github.com/alishahryar1/free-claude-code) at `74d4ccfde724f7416fa2a728d594d704dddc7c94`. 23 published attempts.
+Lineage `604b02c1526246078c0978552b047195491b9acc50c67042a6df51b76f4a0e41` on [https://github.com/alishahryar1/free-claude-code](https://github.com/alishahryar1/free-claude-code) at `74d4ccfde724f7416fa2a728d594d704dddc7c94`. 24 published attempts.
 
 Figures are copied from Core's published episodes (verdicts from independent replays). Nothing here is estimated.
 
@@ -16,15 +16,22 @@ Figures are copied from Core's published episodes (verdicts from independent rep
 
 ## Target perf:decode_ir
 
-- Attempts: 12 (5 accepted, 7 no candidate)
+- Attempts: 13 (5 accepted, 8 no candidate)
 - Best accepted effect: 13.58% (ratio 0.8642), episode `323e221229a9`
 - Accepted effects: 13.58%, 2.49%, 1.64%, 1.23%, 1.13%
 - Files changed by accepted candidates: `src/free_claude_code/core/anthropic/stream_contracts.py`, `src/free_claude_code/core/anthropic/streaming/decoder.py`
-- Median model spend per attempt: 0.7003 USD (over 12 attempts with a recorded cost)
+- Median model spend per attempt: 0.7065 USD (over 13 attempts with a recorded cost)
 
 ## In the agent's own words
 
 The agent's journal entries on this lineage, newest first, verbatim. They are its own notes: claimed, not checked.
+
+> I tried to reduce decode_ir in src/free_claude_code/core/anthropic/streaming/decoder.py and src/free_claude_code/core/anthropic/stream_contracts.py. I worked from parse_sse_text, AnthropicSSEDecoder, feed_frames, and SSEEvent. The largest edits replaced stream_contracts.py lines 81-136 with 67 lines and decoder.py lines 3-13 with 31 lines.
+> Evaluation 1 was "outcome: rejected" with "no_improvement: worst ratio 0.9999 vs required 0.9900". Evaluation 3 was "outcome: rejected" with "worst ratio 0.9992". Evaluation 5 was "outcome: rejected" with "worst ratio 0.9991". Each run had "equivalence: identical outputs". The session ended with no candidate.
+> The decode_ir changes did not help enough. aggregate_ir moved to ratio 1.0007, 1.0008, and 1.0015. Guard stayed ok, but the target stayed near parent.
+> Next try should use lineage_bench.py and lineage_equiv.py on smaller decoder.py changes first. Check parse_sse_text and feed_frames separately.
+>
+> 2026-10-14, episode `2996d12b8968` (no candidate)
 
 > Changed src/free_claude_code/core/anthropic/sse_aggregation.py in _sse_payload and aggregate_anthropic_sse_to_message. Tried reordering content_block_delta handling and fast parsing canonical content_block_delta frames.
 > evaluation 1 was rejected: aggregate_ir ratio 1.0011. evaluation 3 was rejected: aggregate_ir ratio 0.9996. evaluation 5 was rejected: aggregate_ir ratio 0.9997. evaluation 7 was rejected: aggregate_ir ratio 0.9995. Builds were ok. Equivalence had identical outputs.
@@ -53,13 +60,6 @@ The agent's journal entries on this lineage, newest first, verbatim. They are it
 > Try a narrower change from lineage_bench.py. No candidate was submitted.
 >
 > 2026-10-13, episode `85641c985284` (no candidate)
-
-> I changed src/free_claude_code/core/anthropic/sse_aggregation.py in _sse_payload and aggregate_anthropic_sse_to_message. I tried a module-level JSONDecoder and raw_decode for the SSE single-data fast path. The stripped json.loads path stays as fallback.
-> evaluation 1 was rejected: aggregate_ir parent 1574925205, candidate 1576000014, ratio 1.0007. evaluation 3 was rejected: aggregate_ir parent 1574926907, candidate 1577424316, ratio 1.0016. Those changes did not help. evaluation 5 was accepted in sandbox: aggregate_ir parent 1574937344, candidate 1553729831, ratio 0.9865. Equivalence identical outputs. guard: ok, 1 files, 20 lines.
-> I now believe avoiding strip and json.loads on the common frame is the useful part. Larger control-flow changes add work here.
-> Next try the same raw_decode pattern only after checking stream_contracts.py. Leave streaming/decoder.py unchanged unless decode_ir is the target.
->
-> 2026-10-13, episode `201643ef8faf` (accepted)
 
 ## Licence
 
