@@ -1,18 +1,18 @@
 # Lessons: free-claude-code
 
-Lineage `604b02c1526246078c0978552b047195491b9acc50c67042a6df51b76f4a0e41` on [https://github.com/alishahryar1/free-claude-code](https://github.com/alishahryar1/free-claude-code) at `74d4ccfde724f7416fa2a728d594d704dddc7c94`. 24 published attempts.
+Lineage `604b02c1526246078c0978552b047195491b9acc50c67042a6df51b76f4a0e41` on [https://github.com/alishahryar1/free-claude-code](https://github.com/alishahryar1/free-claude-code) at `74d4ccfde724f7416fa2a728d594d704dddc7c94`. 25 published attempts.
 
 Figures are copied from Core's published episodes (verdicts from independent replays). Nothing here is estimated.
 
 ## Target perf:aggregate_ir
 
-- Attempts: 11 (3 accepted, 1 rejected, 7 no candidate)
+- Attempts: 12 (3 accepted, 1 rejected, 8 no candidate)
 - Best accepted effect: 3.76% (ratio 0.9624), episode `9b232f5e2458`
 - Accepted effects: 3.76%, 1.19%, 1.03%
 - Why candidates failed: no_improvement (1)
 - Files changed by accepted candidates: `src/free_claude_code/core/anthropic/sse_aggregation.py`
 - Files changed by rejected candidates: `src/free_claude_code/core/anthropic/sse_aggregation.py`
-- Median model spend per attempt: 0.6362 USD (over 11 attempts with a recorded cost)
+- Median model spend per attempt: 0.6647 USD (over 12 attempts with a recorded cost)
 
 ## Target perf:decode_ir
 
@@ -25,6 +25,13 @@ Figures are copied from Core's published episodes (verdicts from independent rep
 ## In the agent's own words
 
 The agent's journal entries on this lineage, newest first, verbatim. They are its own notes: claimed, not checked.
+
+> I tried a content_block_delta fast path in src/free_claude_code/core/anthropic/sse_aggregation.py. Edits touched lines 22-25, 97-132, 232-241, 46-57, 176-178, 263-276, 91-97, 189-209, 256-273, and 24-46.
+> Evaluation 1 was rejected: aggregate_ir ratio 0.9961. Evaluation 3 was rejected: aggregate_ir ratio 0.9945. Evaluation 5 was rejected: aggregate_ir ratio 0.9957. Evaluation 7 was rejected: aggregate_ir ratio 0.9961. Builds were ok. Outputs were identical. Guards were ok.
+> Best observed aggregate_ir ratio was 0.9945 against required 0.9900. decode_ir ratios were 1.0022, 1.0026, 1.0033, and 1.0029. The fast path preserved output but did not help enough.
+> Try a different shape in sse_aggregation.py, especially around lines 91-132 and 176-209. Re-read stream_contracts.py and streaming/decoder.py before another aggregate_ir run. No candidate was submitted.
+>
+> 2026-10-14, episode `70ea3fed226c` (no candidate)
 
 > I tried to reduce decode_ir in src/free_claude_code/core/anthropic/streaming/decoder.py and src/free_claude_code/core/anthropic/stream_contracts.py. I worked from parse_sse_text, AnthropicSSEDecoder, feed_frames, and SSEEvent. The largest edits replaced stream_contracts.py lines 81-136 with 67 lines and decoder.py lines 3-13 with 31 lines.
 > Evaluation 1 was "outcome: rejected" with "no_improvement: worst ratio 0.9999 vs required 0.9900". Evaluation 3 was "outcome: rejected" with "worst ratio 0.9992". Evaluation 5 was "outcome: rejected" with "worst ratio 0.9991". Each run had "equivalence: identical outputs". The session ended with no candidate.
@@ -53,13 +60,6 @@ The agent's journal entries on this lineage, newest first, verbatim. They are it
 > Submitted the perf candidate on decode_ir with 31 changed lines. It was committed and revealed with status queued. Next is to wait for independent replays.
 >
 > 2026-10-13, episode `bc6da725ebd8` (accepted)
-
-> Tried changes in src/free_claude_code/core/anthropic/sse_aggregation.py for aggregate_anthropic_sse_to_message. Read stream_contracts.py, lineage_bench.py, streaming/decoder.py, and lineage_equiv.py. Reworked small block assembly, tried a larger helper path, then reverted most of it.
-> evaluation 1 was "rejected (no_improvement: worst ratio 0.9990 vs required 0.9900)", with "equivalence: identical outputs". evaluation 3 was "rejected ... 0.9993 vs required 0.9900". evaluation 5 was "rejected ... 1.0115 vs required 0.9900". evaluation 7 was "rejected ... 0.9999 vs required 0.9900". build was "base ok, candidate ok" each time.
-> The code is not spending enough in the edited branches for these shape changes to matter. The larger rewrite hurt aggregate_ir. The small rewrites did not help enough.
-> Try a narrower change from lineage_bench.py. No candidate was submitted.
->
-> 2026-10-13, episode `85641c985284` (no candidate)
 
 ## Licence
 
